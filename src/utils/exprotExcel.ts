@@ -10,6 +10,7 @@ const autoWidthAction = (val, width = 10) => {
   }
   return width
 }
+
 export const exportExcel = async ({ column, data, filename, autoWidth, format }) => {
   // 创建excel
   const workbook = new ExcelJS.Workbook()
@@ -41,13 +42,24 @@ export const exportExcel = async ({ column, data, filename, autoWidth, format })
     // 设置列名、键和宽度
     columnsName.push(obj)
   })
+  //设置列名
   worksheet.columns = columnsName
   // 添加行
   worksheet.addRows(data)
+  // 设置单元格的默认样式
+  worksheet.eachRow((row, rowIndex) => {
+    row.eachCell((cell) => {
+      cell.alignment = { vertical: 'middle', horizontal: 'center' }; // 居中对齐
+      cell.font = { name: 'Arial', size: 12 }; // 设置字体
+      // 还可以设置其他样式，比如背景色、边框等
+    });
+    // 单独设置第一行字体加粗
+    if (rowIndex === 1) {
+      row.font = { bold: true }; // 设置字体加粗
+    }
+  });
   // 写入文件
-
   const uint8Array = format === 'xlsx' ? await workbook.xlsx.writeBuffer() : await workbook.csv.writeBuffer()
-
   const blob = new Blob([uint8Array], { type: 'application/octet-binary' })
   if (window.navigator.msSaveOrOpenBlob) {
     // msSaveOrOpenBlob方法返回boolean值
@@ -61,6 +73,8 @@ export const exportExcel = async ({ column, data, filename, autoWidth, format })
     window.URL.revokeObjectURL(link.href) // 释放内存
   }
 }
+
+
 export function addCellStyle(cell, attr) {
   const { color, fontSize, horizontal, bold } = attr || {}
   // eslint-disable-next-line no-param-reassign

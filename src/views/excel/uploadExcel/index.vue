@@ -32,31 +32,21 @@
           const table = []
           let headers = []
           sheets.forEach((sheet) => {
-            sheet._rows.forEach((row, index) => {
-              if (index === 0) {
-                row.values.forEach((it) => {
-                  headers.push(it)
-                })
-              } else {
-                let obj = {}
-                let arr = []
-                row.values.forEach((it) => {
-                  arr.push(it)
-                })
-                headers.forEach((ite, i) => {
-                  obj[ite] = arr[i]
-                })
-                table.push(obj)
-              }
-              // const tableRow = {
-              //   position: "",
-              //   val: "",
-              // };
-              // row._cells.forEach((cell) => {
-              //   tableRow.position = cell._address;
-              //   tableRow.val = cell._value.model.value || "";
-              // });
-            })
+            sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+            if (rowNumber === 1) {
+              headers = row.values;
+            } else {
+              let obj = {};
+              headers.forEach((header, i) => {
+                if (i < row.values.length) {
+                  obj[header] = row.values[i] !== undefined ? row.values[i] : null;
+                } else {
+                  obj[header] = null; 
+                }
+              });
+              table.push(obj);
+            }
+            });
           })
           tableData.value = table
           tableHeader.value = headers

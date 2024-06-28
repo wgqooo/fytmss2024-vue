@@ -45,10 +45,11 @@
 <script lang="ts" setup>
   import { ref, reactive } from 'vue'
   import type { FormInstance } from 'element-plus'
-  import { ElNotification } from 'element-plus'
+  import { ElMessage, ElNotification } from 'element-plus'
   import { useRouter } from 'vue-router'
   import { useUserStore } from '@/store/modules/user'
   import { getTimeStateStr } from '@/utils/index'
+  import service from '@/api/request'
 
   const router = useRouter()
   const UserStore = useUserStore()
@@ -57,14 +58,17 @@
   const loading = ref(false)
 
   const rules = reactive({
-    password: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-    username: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+    password: [{ required: true, message: '请输入用户名(4~30字符)', min: 4, max: 30, trigger: 'blur' }],
+    username: [{ required: true, message: '请输入密码(4~30字符)', min: 4, max: 30, trigger: 'blur' }],
   })
 
   // 表单数据
   const ruleForm = reactive({
-    username: 'admin',
-    password: '123456',
+    //真实姓名
+    name:'',
+    //员工编号
+    username: '',
+    password: '',
   })
 
   // 显示密码图标
@@ -78,19 +82,29 @@
       if (valid) {
         loading.value = true
         // 登录
-        setTimeout(async () => {
-          await UserStore.login(ruleForm)
-          await router.push({
-            path: '/',
-          })
-          ElNotification({
-            title: getTimeStateStr(),
-            message: '欢迎登录 Vue Admin Perfect',
-            type: 'success',
-            duration: 3000,
-          })
-          loading.value = true
-        }, 1000)
+        service.post('sys/login', JSON.stringify(ruleForm))
+        .then(
+           response => {
+            if(response.data.code == 0){
+                //localStorage.name = JSON.stringify(response.data.name)
+                ruleForm.name = response.data.name
+                //存储用户信息和token
+                UserStore.login(ruleForm)
+                router.push({
+                  path: '/',
+                })
+                ElNotification({
+                  title: getTimeStateStr(),
+                  message: '欢迎登录 Vue Admin Perfect',
+                  type: 'success',
+                  duration: 3000,
+                })
+            }else{
+              ElMessage.error(response.data.msg);
+              loading.value = false
+            }
+          }
+        )
       } else {
         console.log('error submit!')
         return false

@@ -1,6 +1,6 @@
 <template>
   <div class="zb-pro-table">
-    <div class="header">
+    <div v-if="showSearch" class="header">
       <SearchForm :columns="baseFormColumns" @submit="onSubmit" />
     </div>
 
@@ -16,28 +16,37 @@
         <el-table
           v-loading="loading"
           class="zb-table"
-          :data="list"
+          :data="data"
           :border="true"
           @selection-change="(val) => emit('selection-change', val)"
         >
-          <template v-for="item in columns">
+          <template v-for="(item,index) in columns">
             <el-table-column v-if="item.slot" v-bind="{ ...item, ...{ prop: item.name } }">
               <template #default="scope">
                 <slot :name="item.name" :item="item" :row="scope.row"></slot>
               </template>
             </el-table-column>
-            <el-table-column v-else v-bind="{ ...item, ...{ prop: item.name } }" />
+            <el-table-column v-else-if="item.index" v-bind="{ ...item, ...{ prop: item.name } }">
+              <template #default="{ $index }">
+                {{ getIndex($index) }}
+              </template>
+            </el-table-column>
+            <el-table-column v-else v-bind="{ ...item, ...{ prop: item.name } }">
+              <!-- <template #default="scope">
+                {{ item.name ? scope.row[item.name] : item.value }}
+              </template> -->
+            </el-table-column>
           </template>
         </el-table>
       </div>
       <!-- ------------分页--------------->
       <div class="pagination">
         <el-pagination
-          v-model:currentPage="pagination.currentPage"
-          :page-size="10"
-          background
+          :current-page="resPage.pageNum"
+          :page-size="resPage.pageSize"
+          background="true"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="data.length"
+          :total="resPage.total"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
@@ -46,13 +55,15 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { computed, ref } from 'vue'
+  import { computed, ref, reactive } from 'vue'
   import SearchForm from '@/components/SearchForm/index.vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import type { FormInstance } from 'element-plus'
-  const ruleFormRef = ref<FormInstance>()
   const emit = defineEmits(['reset', 'onSubmit', 'selection-change'])
   let props = defineProps({
+    showSearch:{
+      default: true
+    },
     columns: {
       type: Array,
       default: () => [],
@@ -61,9 +72,21 @@
       type: Array,
       default: () => [],
     },
+    resPage: {
+      type: Object,
+      default: {}
+    },
     loading: {
       type: Boolean,
       default: false,
+    },
+    handleSizeChange: {
+      type: Function,
+      default: () => {}
+    },
+    handleCurrentChange: {
+      type: Function,
+      default: () => {}
     },
   })
 
@@ -72,36 +95,13 @@
     return props.columns.filter((item) => item.valueType && item.search)
   })
 
-  const pagination = reactive({
-    currentPage: 1,
-    pageSize: 10,
-  })
-
-  const currentPage = ref(1)
-  // 收缩展开
-  const isExpand = ref(false)
-  const handleSizeChange = (val: number) => {
-    console.log(`${val} items per page`)
-  }
-  const handleCurrentChange = (val: number) => {
-    console.log(`current page: ${val}`)
-    pagination.currentPage = val
+  const getIndex = (index: number) => {
+    if(JSON.stringify(props.resPage) === '{}'){
+      return index + 1
+    }
+    return index + 1 + (props.resPage.pageNum - 1) * props.resPage.pageSize
   }
 
-  const list = computed(() => {
-    let arr = JSON.parse(JSON.stringify(props.data))
-    return arr.splice((pagination.currentPage - 1) * 10, 10)
-  })
-
-  const listLoading = ref(false)
-  const confirmEdit = (row) => {
-    row.edit = false
-  }
-  const cancelEdit = (row) => {
-    row.edit = false
-  }
-
-  import { reactive } from 'vue'
 
   let obj = {}
   let search = []
@@ -126,19 +126,7 @@
     })
     emit('reset')
   }
-  const deleteAction = (row) => {
-    ElMessageBox.confirm('你确定要删除当前项吗?', '温馨提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-      draggable: true,
-    })
-      .then(() => {
-        list.value = list.value.filter((item) => item.id !== row.id)
-        ElMessage.success('删除成功')
-      })
-      .catch(() => {})
-  }
+  
 </script>
 <style scoped lang="scss">
   .edit-input {
@@ -151,7 +139,7 @@
   }
   .zb-pro-table {
     width: 100%;
-    height: 100%;
+
     display: flex;
     flex-direction: column;
 
@@ -175,7 +163,7 @@
       overflow: hidden;
       background: white;
       box-shadow: 0 0 12px rgb(0 0 0 / 5%);
-      min-height: 300px;
+      min-height: 600px;
       .operator {
         margin-bottom: 15px;
       }

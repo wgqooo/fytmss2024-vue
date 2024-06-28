@@ -40,6 +40,7 @@
 
   const activeMenu = computed(() => {
     const { meta, path } = route
+    console.log(meta.activeMenu)
     if (meta.activeMenu) {
       return meta.activeMenu
     }

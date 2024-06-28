@@ -1,0 +1,711 @@
+/* 字体颜色 */
+$color-theme: #0ff8f8; // 青蓝色主题色
+$color-theme-hover: #97ffff; // 鼠标悬浮主题色
+$color-white: #ffffff; // 白色，正文标题颜色
+$color-black: #333; // 黑色
+$color-subtitle: #acaeb3; // 浅灰色，次强调
+$color-purple: #303774; // 深紫色
+$color-blue: #409eff; // 深蓝色
+$color-black: #131725; // 黑色调
+$color-red: #f45151; // 红色调
+$color-warning: #ff7d00; // 警告色
+
+/* 字体大小 */
+$font-size-default: 14px; //默认字体大小
+$font-size-12: 12px;
+$font-size-16: 16px;
+$font-size-18: 18px;
+$font-size-20: 20px;
+$font-size-24: 24px;
+
+/* 字体粗细 */
+$font-weight: 600;
+
+/* 背景颜色 */
+$bg-theme: #070b1a; // 深色主题背景
+$bg-transparent: transparent; // 透明
+$bg-white: #ffffff; // 白色
+$bg-default: #000000; // 默认黑色
+$bg-gray: #393c48; // 深灰色
+$bg-purple: #352c4e; // 深紫色
+$bg-li-hover: #0c4649; // 鼠标悬浮列表选背景色
+$bg-switch-active: #1ec2c2; // 开关背景色
+$bg-switch: #43476b; // 开关背景色
+$bg-checkbox-active: #13a6ad; // 多选选中
+
+/* 边框 */
+$border-default: 1px solid #797979; // 默认边框大小及颜色
+$border-theme: 1px solid #125b64; // 主题边框
+$border-purple: 1px solid #323869; // 紫色
+$border-theme-hover: 1px solid #0ff8f8; // 鼠标悬浮主题边框
+$border-radio: 3px solid #0a868c;
+
+.element-style {
+
+  /* button按钮 */
+  .style-button {
+    border-radius: 0;
+
+    /* 素按钮 */
+    &.is-plain {
+      background: $bg-transparent;
+      color: $color-white;
+      border: $border-default;
+
+      &:hover {
+        color: $color-theme;
+        border: $border-hover;
+      }
+    }
+  }
+
+  /* Divider 分割线 */
+  .style-divider {
+    border-top: $border-default;
+
+    /* 中间文本 */
+    .el-divider__text {
+      width: 120px;
+      text-align: center;
+      background: $bg-theme;
+      color: $color-subtitle;
+    }
+  }
+
+  /* 进度条 */
+  .style-progress {
+    width: 350px;
+
+    /* 背景 */
+    .el-progress-bar__outer {
+      background: $bg-purple;
+      border-radius: 0;
+
+      /* 进度条 */
+      .el-progress-bar__inner {
+        border-radius: 0;
+      }
+    }
+
+    /* 进度条描述文本 */
+    .el-progress__text {
+      min-width: 0;
+    }
+  }
+  
+    /* dropdown下拉菜单面板 */
+  .style-dropdown {
+    padding: 8px 0 8px;
+    color: #000;
+    font-size: 12px;
+ }
+
+  /* input输入框 */
+  .style-input {
+
+    /* 容器 */
+    .el-input__wrapper {
+      box-shadow: unset !important;
+      background: unset;
+      border: $border-theme;
+      
+      /* 选中,聚焦,悬浮 */
+      &.is-active,
+      &.is-focus,
+      &:hover {
+         box-shadow: unset !important;
+         border: $border-theme-hover;
+      }
+      
+      /* 点击后 */
+      .el-input.is-focus .el-input__wrapper,
+      .el-input__wrapper.is-focus {
+        box-shadow: unset !important;
+        border: $border-theme-hover;
+      }
+
+      /* 内容 */
+      .el-input__inner,
+      /* 日期选择 */
+      .el-range-input,
+      /* 日期图标 */
+      .el-range__icon,
+      /* 日期分隔 */
+      .el-range-separator
+      {
+        color: $color-white;
+      }
+    }
+  }
+
+  /* textarea输入框 */
+  .style-textarea {
+
+    /* 内容 */
+    .el-textarea__inner {
+      box-shadow: none;
+      color: $color-white;
+      border: $border-theme;
+      background: $bg-transparent;
+      
+      &:hover,
+      &:focus {
+          border: $border-theme-hover;
+      }
+    }
+  }
+
+  /* select下拉框 */
+  /* 边框高亮直接给el-select 加上class="style-input" */
+  /* select框加背景图 */
+  .style-select-bg {
+    width: 100px;
+    .el-input__wrapper {
+            &:hover {
+                border: none;
+                background: url('../images/btn_hover.svg') 0 0 / 100% 100% no-repeat !important;
+            }
+
+            border-radius: 0;
+            border: none;
+            background: url('../images/btn_default.svg') 0 0 / 100% 100% no-repeat !important;
+        }
+
+        .el-input.is-focus .el-input__wrapper,
+        .el-input__wrapper.is-focus {
+            border: none;
+            box-shadow: unset !important;
+            background: url('../images/btn_hover.svg') 0 0 / 100% 100% no-repeat !important;
+        }
+        .el-input_inner {
+          color: $color-white;
+        }
+  }
+ /* select纯文字加渲染背景色 */
+ .style-select-text {
+        width: 130px;
+        .el-input__wrapper {
+            &:hover {
+                border: none;
+                background: #285757;
+            }
+
+            border-radius: 0;
+            border: none;
+            background: unset;
+        }
+
+        .el-input.is-focus .el-input__wrapper,
+        .el-input__wrapper.is-focus {
+            border: none;
+            box-shadow: unset !important;
+            background: #285757;
+        }
+        .el-input_inner {
+          color: $color-white;
+        }
+    }
+
+  /* radio单选框组 */
+  .style-radios {
+
+    /* 单选框 */
+    .el-radio {
+
+      /* 选中 */
+      &.is-checked {
+
+        /* 字体颜色 */
+        .el-radio__label {
+          color: $color-theme;
+        }
+      }
+
+      /* 圆圈 */
+      .el-radio__inner {
+        border: $border-radio;
+        background: $bg-gray;
+      }
+    }
+  }
+
+  /* switch开关 */
+  .style-switch {
+
+    /* 关闭 */
+    .el-switch__core {
+      background: $bg-switch;
+      border-color: $bg-switch;
+    }
+
+    /* 开启 */
+    &.is-checked .el-switch__core {
+      background: $bg-switch-active;
+      border-color: $bg-switch-active;
+    }
+  }
+
+  /* Input Number 数字输入框 */
+  /* el-input 加上class="style-input" */
+  .style-inputNumber {
+
+    /* 减 */
+    .el-input-number__decrease {
+      color: $color-white;
+      border-right: $border-theme;
+      background: $bg-transparent;
+    }
+
+    /* 增 */
+    .el-input-number__increase {
+      color: $color-white;
+      border-left: $border-theme;
+      background: $bg-transparent;
+    }
+  }
+
+  /* 单联date-picker日期选择器 */
+  /* 双联date-picker日期选择器 */
+  /* el-date-picker 加上class="style-input" */
+  .style-picker {
+      width: 200px;
+  }
+
+
+  /* drawer抽屉 */
+  .style-drawer {
+    width: 340px !important;
+    background: $bg-theme;
+
+    /* 头部 */
+    .el-drawer__header {
+      margin: 0;
+      padding: 24px;
+      border-bottom: $border-theme;
+
+      /* 删除按钮 */
+      .el-drawer__close-btn {
+        // display: none;
+      }
+    }
+
+    /* 内容 */
+    .el-drawer__body {
+      padding: 4px 24px;
+    }
+
+    /* 底部 */
+    .el-drawer__footer {
+      padding: 20px 24px;
+      border-top: $border-theme;
+    }
+  }
+
+  /* tag标签 */
+  .style-tag {
+    border-radius: 2px;
+    padding: 9px 8px;
+    background: $bg-theme;
+    color: $color-white;
+    
+    &:hover {
+      background: $color-theme;
+    }
+    /* 选中 */
+    &.is-checked {
+      background: $bg-li-hover;
+      color: $color-white;
+    }
+  }
+
+  /* card卡片 */
+  .style-card {
+      .el-card__body {
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+  }
+
+  /* Pagination 分页 */
+  /* el-pagination 加上class="style-input" */
+  .style-pagination {
+          /* 总数,跳转 */
+          .el-pagination__total,
+          .el-pagination__jump {
+            color: $color-title;
+          }
+          /* 页码,上下一页 */
+          li,
+          .btn-prev,
+          .btn-next {
+            color: $color-title;
+            background: transparent;
+
+            &:hover {
+              color: $color-theme;
+            }
+          }
+        
+          /* 页码选中 */
+          .is-active {
+            background: $background-color-li-active;
+            color: $color-theme;
+          }
+   }
+   
+    /* message box 弹窗 */
+   .el-message-box.style-message-box {
+    background: #090b1a;
+    border-color: #0d959a;
+    .el-message-box__message,
+    .el-message-box__title,
+    .el-message-box__close {
+        color: #fff;
+    }
+
+    .el-button {
+        border-radius: 0;
+        background: #0ff8f8;
+        color: #333;
+
+        &:hover {
+            background: #0dc9cc;
+        }
+
+        &:first-child {
+            background: transparent;
+            color: #fff;
+            border: 1px solid #323869;
+
+            &:hover {
+                color: #0dc9cc;
+                border: 1px solid #0dc9cc;
+            }
+        }
+    }
+}
+
+  /* table表格 */
+  .style-table {
+    width: 100%;
+    height: 100px;
+    color: $color-white;
+    background: $bg-transparent;
+    /* 表格边框 */
+    --el-table-border-color: transparent;
+
+    /* 表格下边线 */
+    .el-table__inner-wrapper {
+      &::before {
+        display: none;
+      }
+    }
+    /* 表头 */
+    .el-table__header {
+         width: 100% !important;
+          tr {
+            background: $bg-transparent;
+
+            th {
+              border-bottom: none;
+              color: $color-white;
+              background: $bg-transparent;
+            }
+          }
+    }
+    /* 表格内容 */
+    .el-table__body {
+          width: 100% !important;
+          /* 行边距 */
+          -webkit-border-vertical-spacing: 2px;
+          tr {
+            background: transparent;
+
+            &.click-row {
+
+              td {
+                background: #276366 !important;
+              }
+
+            }
+
+            &.check-row {
+
+              td {
+                background: #0C4649 !important;
+              }
+            }
+
+            &:hover {
+              cursor: pointer;
+
+              td {
+                background: #09232D !important;
+              }
+            }
+
+            td {
+              border-bottom: none;
+              background: transparent;
+            }
+          }
+        }
+    /* 固定列 */
+        .el-table__header,
+        .el-table__body {
+          .el-table-fixed-column--right,
+          .el-table-fixed-column--left {
+            background: #080a19;
+          }
+        }
+    /* 复选框 */
+        .el-checkbox__inner {
+          background: transparent;
+          border: 1px solid #0A868C;
+          width: 14px;
+          height: 14px;
+        }
+    /* 复选框选中 */
+        .el-checkbox__input.is-checked,
+        .el-checkbox__input.is-indeterminate{
+          .el-checkbox__inner {
+            background: #0A868C;
+            border: 1px solid #0A868C;
+          }
+        }
+  }
+}
+
+/* popper弹窗 */
+.popper-default {
+  border: $border-theme !important;
+  background: $bg-theme;
+
+  /* 箭头颜色背景 */
+  // .el-popper__arrow::before {
+  //     background: $bg-theme;
+  //     border-color: $color-theme;
+  // }
+
+  /* 箭头隐藏 */
+  .el-popper__arrow {
+    display: none;
+  }
+
+  /* select下拉框行 */
+  .el-select-dropdown__item {
+    color: $color-white;
+    padding: 0 12px;
+
+    &.hover,
+    &:hover {
+      background-color: $bg-li-hover;
+    }
+  }
+  
+    /* dropdown下拉菜单行 */
+    .el-dropdown-menu__item {
+        font-size: 12px;
+        color: #000;
+    }
+
+  /* 单联date-picker日期选择器 */
+  /* 面板 */
+  .el-picker-panel {
+    background: $bg-theme;
+    color: $color-white;
+  }
+
+  /* 头部文字 */
+  .el-date-picker__header-label,
+  /* 左右按钮文字 */
+  .el-picker-panel__icon-btn,
+  /* 星期文字 */
+  .el-date-table th,
+  /* 月份文字 */
+  .el-month-table td .cell,
+  /* 月份文字 */
+  .el-year-table td .cell {
+    color: $color-white;
+
+    &:hover {
+      color: $color-blue;
+    }
+  }
+
+  /* 双联date-picker日期选择器 */
+  /* 内容右边框 */
+  .el-picker-panel__content {
+    border-right: $border-theme;
+  }
+
+  /* 选日期月份时范围背景色 */
+  .el-date-table td.in-range .el-date-table-cell,
+  .el-month-table td.in-range div,
+  .el-month-table td.in-range div:hover {
+            background: #2b2b2c;
+    }
+
+        /* 时间选择器 */ 
+    .el-picker-panel.has-time {
+        .el-picker-panel__footer {
+            background: $background-color-theme;
+            .el-button.is-text {
+                color: #fff;
+                &:hover {
+                    background: none;
+                    color: $color-theme;
+                }
+            }
+            .el-button.is-plain {
+                color: #333;
+                border: none;
+                background: $color-theme-hover;
+                &:hover {
+                    background: $color-theme;
+                }
+            }
+        }
+        .el-picker-panel__body {
+            .el-input__wrapper {
+                background: $background-color-theme;
+                .el-input__inner {
+                    color: #fff;
+                }
+            }
+            .el-time-panel {
+                background: $background-color-theme;
+            }
+        }
+    }
+    
+    
+ /* menu菜单 */
+    .style-menu {
+    padding: 4px 4px 0;
+
+    /* 鼠标移入 */
+    .el-menu-item:hover {
+        color: #409eff !important;
+    }
+
+    /* 选中 */
+    .el-menu-item.is-active {
+        color: #165dff;
+        font-weight: 550;
+        background: #e8f3ff;
+    }
+
+    /* 一级菜单下拉菜单标题 */
+    &>.el-menu-item,
+    .el-sub-menu__title {
+        margin-bottom: 4px;
+        height: 38px;
+        line-height: 38px;
+    }
+
+    /* 下拉箭头 */
+    .el-sub-menu__icon-arrow {
+        right: 10px;
+        font-size: 16px;
+    }
+
+    /* 下拉菜单子项 */
+    .el-sub-menu .el-menu-item {
+        margin-bottom: 4px;
+        padding-left: 20px !important;
+        padding-right: 0 !important;
+        height: 32px;
+        line-height: 32px;
+    }
+}
+
+
+ /* checkbox 多选框 */
+     .style-checkbox {
+        /* 每个选框单独一行 */
+        display: block;
+        /* 字体颜色 */
+        --el-checkbox-checked-text-color: #606266;
+
+        /* 选框颜色 */
+        :deep(.el-checkbox__input.is-checked),
+        /* 全选框颜色 */
+        :deep(.el-checkbox__input.is-indeterminate) {
+            .el-checkbox__inner {
+                background: #165dff;
+                border: 1px solid #165dff;
+            }
+        }
+    }
+}
+
+
+/* dialog弹窗 */
+.dialog-default {
+        border: $border-purple;
+        background: $bg-theme;
+
+        /* 头部 */
+        .el-dialog__header {
+            padding: 16px;
+            border-bottom: $border-purple;
+            text-align: center;
+
+            /* 标题 */
+            .el-dialog__title {
+                color: $color-white;
+                font-size: $font-size-16;
+                font-weight: $font-weight;
+            }
+
+            /* 删除按钮 */
+            .el-dialog__headerbtn {
+                top: 8px;
+                right: 10px;
+                font-size: 20px;
+                width: auto;
+                height: auto;
+
+                i {
+                    padding: 5px;
+                }
+
+                & :hover {
+                    color: $color-white;
+                }
+            }
+        }
+
+        /* 内容 */
+        .el-dialog__body {
+            padding: 25px 20px;
+        }
+
+        /* 底部 */
+        .el-dialog__footer {
+            border-top: $border-purple;
+            padding: 16px 20px;
+            text-align: right;
+        }
+}
+
+/* 消息box */
+.el-message-box {
+     /* 标题 */
+    .el-message-box__title {}
+    /* 内容 */
+    .el-message-box__content {
+        text-align: left;
+        color: #1D2129;
+    }
+     /* 按钮 */
+    .el-message-box__btns {
+        justify-content: flex-end;
+
+        .el-button.el-button--primary {
+            background: #f53f3f;
+            border: none;
+        }
+    }
+}

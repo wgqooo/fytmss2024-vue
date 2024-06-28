@@ -28,11 +28,11 @@
   import { computed, watch, ref, onMounted } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { TabsPaneContext } from 'element-plus'
-  import MoreButton from './components/MoreButton'
+ 
   import path from 'path-browserify'
   import { useTagsViewStore } from '@/store/modules/tagsView'
   import { usePermissionStore } from '@/store/modules/permission'
-
+  import MoreButton from './components/MoreButton.vue'
   const route = useRoute()
   const router = useRouter()
   const TagsViewStore = useTagsViewStore()

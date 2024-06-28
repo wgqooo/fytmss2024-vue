@@ -51,7 +51,7 @@
 </template>
 <script lang="ts" setup name="comprehensive">
   import { ref, reactive, onMounted, nextTick } from 'vue'
-  import * as dayjs from 'dayjs'
+  import dayjs from 'dayjs'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import type { FormInstance } from 'element-plus'
   import { columns } from './constants'

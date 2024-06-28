@@ -71,11 +71,14 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       cors: true,
       // 代理跨域（模拟示例）
       proxy: {
-        // "/api": {
-        //   target: "", // easymock
-        //   changeOrigin: true,
-        //   rewrite: path => path.replace(/^\/api/, "")
-        // }
+        "/api": {
+          target: "http://localhost:9091", 
+          changeOrigin: true,
+          ws:true,//允许websocket代理
+          //重写路径，替换请求地址中的指定路径
+			    //rewrite的作用就是将axios请求地址的/api去掉，如果不需要去掉api的话，不写rewrite就行
+          rewrite: path => path.replace(/^\/api/, "")
+        }
       },
     },
     // 生产环境打包配置
