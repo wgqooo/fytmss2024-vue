@@ -33,20 +33,20 @@
           let headers = []
           sheets.forEach((sheet) => {
             sheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
-            if (rowNumber === 1) {
-              headers = row.values;
-            } else {
-              let obj = {};
-              headers.forEach((header, i) => {
-                if (i < row.values.length) {
-                  obj[header] = row.values[i] !== undefined ? row.values[i] : null;
-                } else {
-                  obj[header] = null; 
-                }
-              });
-              table.push(obj);
-            }
-            });
+              if (rowNumber === 1) {
+                headers = row.values
+              } else {
+                let obj = {}
+                headers.forEach((header, i) => {
+                  if (i < row.values.length) {
+                    obj[header] = row.values[i] !== undefined ? row.values[i] : null
+                  } else {
+                    obj[header] = null
+                  }
+                })
+                table.push(obj)
+              }
+            })
           })
           tableData.value = table
           tableHeader.value = headers

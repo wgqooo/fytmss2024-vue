@@ -65,7 +65,7 @@
   // 表单数据
   const ruleForm = reactive({
     //真实姓名
-    name:'',
+    name: '',
     //员工编号
     username: '',
     password: '',
@@ -82,29 +82,26 @@
       if (valid) {
         loading.value = true
         // 登录
-        service.post('sys/login', JSON.stringify(ruleForm))
-        .then(
-           response => {
-            if(response.data.code == 0){
-                //localStorage.name = JSON.stringify(response.data.name)
-                ruleForm.name = response.data.name
-                //存储用户信息和token
-                UserStore.login(ruleForm)
-                router.push({
-                  path: '/',
-                })
-                ElNotification({
-                  title: getTimeStateStr(),
-                  message: '欢迎登录 Vue Admin Perfect',
-                  type: 'success',
-                  duration: 3000,
-                })
-            }else{
-              ElMessage.error(response.data.msg);
-              loading.value = false
-            }
+        service.post('sys/login', JSON.stringify(ruleForm)).then((response) => {
+          if (response.data.code == 0) {
+            //localStorage.name = JSON.stringify(response.data.name)
+            ruleForm.name = response.data.name
+            //存储用户信息和token
+            UserStore.login(ruleForm)
+            router.push({
+              path: '/',
+            })
+            ElNotification({
+              title: getTimeStateStr(),
+              message: '欢迎登录 Vue Admin Perfect',
+              type: 'success',
+              duration: 3000,
+            })
+          } else {
+            ElMessage.error(response.data.msg)
+            loading.value = false
           }
-        )
+        })
       } else {
         console.log('error submit!')
         return false

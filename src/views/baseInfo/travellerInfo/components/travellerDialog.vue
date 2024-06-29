@@ -17,8 +17,7 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="出生日期" prop="trBirthday">
-        <el-date-picker v-model="ruleForm.trBirthday" placeholder="请输入生日" 
-        format="YYYY-MM-DD" value-format="YYYY-MM-DD"/>
+        <el-date-picker v-model="ruleForm.trBirthday" placeholder="请输入生日" format="YYYY-MM-DD" value-format="YYYY-MM-DD" />
       </el-form-item>
       <el-form-item label="手机号码" prop="trPhone">
         <el-input v-model="ruleForm.trPhone" placeholder="请输入手机号码" />
@@ -30,17 +29,17 @@
         <el-input v-model="ruleForm.trBorAdd"></el-input>
       </el-form-item>
       <el-form-item label="国籍" prop="trNation">
-        <el-select placeholder="请选择国籍(可搜索)" filterable style="width: 77.9%" v-model="ruleForm.trNation">
+        <el-select v-model="ruleForm.trNation" placeholder="请选择国籍(可搜索)" filterable style="width: 77.9%">
           <el-option-group v-for="group in nation" :key="group.label" :label="group.label">
             <el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item.value">
-            <span style="float: left">{{ item.label }}</span>
-            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.en }}</span>
+              <span style="float: left">{{ item.label }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.en }}</span>
             </el-option>
           </el-option-group>
         </el-select>
       </el-form-item>
       <el-form-item label="旅行社" prop="trTravel">
-        <el-input disabled v-model="ruleForm.trTravel"></el-input>
+        <el-input v-model="ruleForm.trTravel" disabled></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -55,13 +54,12 @@
   import service from '@/api/request'
   import { ElMessageBox, ElMessage, FormInstance } from 'element-plus'
   import { onMounted, reactive, ref } from 'vue'
-  import nation from '@/utils/nation';
-   
-  
-  const { getData } = defineProps({
-    getData:{
-      type:Function
-    }
+  import nation from '@/utils/nation'
+
+  const props = defineProps({
+    getData: {
+      type: Function,
+    },
   })
 
   const ruleFormRef = ref<FormInstance>()
@@ -70,17 +68,15 @@
   const title = ref('新增旅客')
 
   const rules = reactive({
-    passportNo: [
-      { required: true, message: '请输入护照号', trigger: 'blur' },
-    ],
+    passportNo: [{ required: true, message: '请输入护照号', trigger: 'blur' }],
     trName: [{ required: true, message: '请输入旅客姓名', trigger: 'blur' }],
     trPinYin: [{ required: false, message: '请输入英文名', trigger: 'change' }],
     trSex: [{ required: true, message: '请选择性别', trigger: 'change' }],
     trBirthday: [{ required: true, message: '请选择出生日期', trigger: 'blur' }],
-    trPhone: [{required: false},{ pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }],
-    trTmpPhone: [{required: false},{ pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }],
-    trBorAdd: [{required: false},{ message: '请输入出生地', trigger: 'blur' }],
-    trNation: [{required: true, message: '请选择国籍', trigger: 'blur' }],
+    trPhone: [{ required: false }, { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }],
+    trTmpPhone: [{ required: false }, { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }],
+    trBorAdd: [{ required: false }, { message: '请输入出生地', trigger: 'blur' }],
+    trNation: [{ required: true, message: '请选择国籍', trigger: 'blur' }],
   })
 
   const ruleForm = reactive({
@@ -93,7 +89,7 @@
     trBirthday: '',
     trBorAdd: '',
     trNation: '',
-    trTravel: ''
+    trTravel: '',
   })
 
   function close() {
@@ -110,7 +106,7 @@
     if (item.passportNo) {
       title.value = '编辑旅客'
       Object.keys(item).forEach((key) => {
-         ruleForm[key] = item[key]
+        ruleForm[key] = item[key]
       })
     }
     //还没有对不同旅行社进行细分
@@ -118,36 +114,36 @@
     dialogVisible.value = true
   }
 
-  const handleClose =  (done: () => void) => {
-     ruleFormRef.value.validate(async (valid, fields) => {
+  const handleClose = (done: () => void) => {
+    ruleFormRef.value.validate(async (valid, fields) => {
       if (valid) {
-        if(title.value == '新增旅客'){
+        if (title.value == '新增旅客') {
           await service({
-          method:'post',
-          url:'base/traveller/save',
-          data:JSON.stringify(ruleForm)
-          }).then( response => {
-            if(response.data.code == 0){
+            method: 'post',
+            url: 'base/traveller/save',
+            data: JSON.stringify(ruleForm),
+          }).then((response) => {
+            if (response.data.code == 0) {
               ElMessage.success(response.data.msg)
-              getData()
-            }else if(response.data.code == 500){
+              props.getData()
+            } else if (response.data.code == 500) {
               ElMessage.error(response.data.msg)
-            }else if(response.data.code == 400){
+            } else if (response.data.code == 400) {
               ElMessage.error(response.data.msg)
             }
           })
-        }else{
+        } else {
           await service({
-          method:'post',
-          url:'base/traveller/update',
-          data:JSON.stringify(ruleForm)
-          }).then( response => {
-            if(response.data.code == 0){
+            method: 'post',
+            url: 'base/traveller/update',
+            data: JSON.stringify(ruleForm),
+          }).then((response) => {
+            if (response.data.code == 0) {
               ElMessage.success(response.data.msg)
-              getData()
-            }else if(response.data.code == 500){
+              props.getData()
+            } else if (response.data.code == 500) {
               ElMessage.error(response.data.msg)
-            }else if(response.data.code == 400){
+            } else if (response.data.code == 400) {
               ElMessage.error(response.data.msg)
             }
           })
@@ -157,7 +153,6 @@
         console.log('error submit!', fields)
       }
     })
-   
   }
 
   defineExpose({
@@ -169,5 +164,4 @@
   // })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

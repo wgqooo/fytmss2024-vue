@@ -27,90 +27,101 @@
     box-shadow: 0 0 12px rgb(0 0 0 / 5%);
     position: relative;
     box-sizing: border-box;
-    .theStepsBtn{
-      display: flex; 
-      justify-content: center; 
+    .theStepsBtn {
+      display: flex;
+      justify-content: center;
       gap: 120px;
       margin-bottom: 30px;
-      .nextStep, .previousStep  {
+      .nextStep,
+      .previousStep {
         height: 30px;
         width: 100px;
         line-height: 0.4;
-        background-color:#8dd9df;
-        border:1px solid #8dd9df;
+        background-color: #8dd9df;
+        border: 1px solid #8dd9df;
         color: white;
-        border-radius:10px;
+        border-radius: 10px;
       }
-      .nextStep:hover, .previousStep:hover {
-        background-color: #FE83C6; border-color: #FE83C6; }
+      .nextStep:hover,
+      .previousStep:hover {
+        background-color: #fe83c6;
+        border-color: #fe83c6;
+      }
       // .nextStep:focus,.previousStep:focus  {
       //   background-color:  #FE83C6;
       //   border-color:  #FE83C6;
       // }
     }
-    .theSteps{
+    .theSteps {
       margin-top: 30px;
       margin-bottom: 20px;
-      :deep(.el-step__head.is-process) {/* 进行中状态：圈线 */
+      :deep(.el-step__head.is-process) {
+        /* 进行中状态：圈线 */
         color: #efa73b;
         border-color: #efa73b;
-      };
-      :deep(.el-step__head.is-process > .el-step__icon) {/* 进行中状态：圈内 */
+      }
+      :deep(.el-step__head.is-process > .el-step__icon) {
+        /* 进行中状态：圈内 */
         background: #efa73b;
         color: #fff;
-      };
-      :deep(.el-step__title.is-process) {/* 进行中状态：title（文字） */
+      }
+      :deep(.el-step__title.is-process) {
+        /* 进行中状态：title（文字） */
         color: #efa73b;
       }
-      :deep(.el-step__head.is-success) {  /* 完成状态：圈线 */
+      :deep(.el-step__head.is-success) {
+        /* 完成状态：圈线 */
         color: #efa73b;
         border-color: #efa73b;
       }
-      :deep(.el-step__title.is-success) {  /* 完成状态：title（文字） */
+      :deep(.el-step__title.is-success) {
+        /* 完成状态：title（文字） */
         color: #efa73b;
       }
-      :deep(.el-step__head.is-success > .el-step__line > .el-step__line-inner) {  /* 完成状态：line  描述：第一步完成，第二步进行时，之间的进度条有颜色*/
+      :deep(.el-step__head.is-success > .el-step__line > .el-step__line-inner) {
+        /* 完成状态：line  描述：第一步完成，第二步进行时，之间的进度条有颜色*/
         width: 100% !important;
         border-width: 1px !important;
       }
     }
-    .ticket-divider{
-        .divider-span{
-          font-weight: bold; font-size: 1.2em;
-        }
-        border-width: 5px; /* 调整分割线的粗细 */
-        border-color: #8dd9df; /* 设置分割线的颜色 */
+    .ticket-divider {
+      .divider-span {
+        font-weight: bold;
+        font-size: 1.2em;
+      }
+      border-width: 5px; /* 调整分割线的粗细 */
+      border-color: #8dd9df; /* 设置分割线的颜色 */
     }
     .util {
       border-bottom: 5px solid #ecf5ff;
       margin-top: 0px;
       margin-bottom: 30px;
-      padding-top: 10px; 
-      padding-bottom: 10px; 
+      padding-top: 10px;
+      padding-bottom: 10px;
       font-weight: bold;
       // display: flex;
       justify-content: flex-end;
       flex-shrink: 0;
-      .startPort{
+      .startPort {
         margin-right: 120px;
       }
-      .startTime{
+      .startTime {
         margin-right: 100px;
       }
     }
-    .table-inner{
+    .table-inner {
       .el-table :deep(.el-checkbox__input.is-checked .el-checkbox__inner),
       .el-table :deep(.el-checkbox__input.is-indeterminate .el-checkbox__inner) {
         border-color: HotPink !important;
         background-color: HotPink !important;
       }
-      
+
       .el-table :deep(.el-checkbox__input .el-checkbox__inner) {
         border-color: #999; /* 修改为你希望的未选中状态的边框颜色 */
       }
-      
+
       .el-table :deep(.el-checkbox__inner:hover) {
-        border-color: #00BFFF; /* 修改为你希望的鼠标悬停状态的边框颜色 */
+        border-color: #00bfff; /* 修改为你希望的鼠标悬停状态的边框颜色 */
       }
     }
     .table {

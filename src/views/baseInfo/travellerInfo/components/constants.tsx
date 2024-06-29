@@ -2,7 +2,7 @@ export const columns = [
   {
     type: 'selection',
     span: 8,
-    align:'center',
+    align: 'center',
     fixed: 'left',
   },
   {
@@ -10,7 +10,7 @@ export const columns = [
     label: '序号',
     span: 8,
     width: 70,
-    align:'center',
+    align: 'center',
     fixed: 'left',
     // 添加 index 属性用于渲染序号
     index: true,
@@ -21,7 +21,7 @@ export const columns = [
     search: true,
     valueType: 'input',
     width: 150,
-    align:'center',
+    align: 'center',
     span: 8,
     attrs: {
       placeholder: '请输入',
@@ -44,7 +44,7 @@ export const columns = [
     label: '手机号',
     search: true,
     align: 'center',
-    width:120,
+    width: 120,
     valueType: 'input',
     span: 8,
     attrs: {
@@ -56,7 +56,7 @@ export const columns = [
     label: '临时手机号',
     search: true,
     align: 'center',
-    width:120,
+    width: 120,
     valueType: 'input',
     span: 8,
     attrs: {
@@ -70,7 +70,7 @@ export const columns = [
     search: true,
     span: 8,
     align: 'center',
-    width:70,
+    width: 70,
     options: [
       {
         value: 1,

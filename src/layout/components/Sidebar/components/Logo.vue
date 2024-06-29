@@ -36,7 +36,8 @@
       height: 100%;
       width: 100%;
 
-      & .sidebar-logo-shrink,.sidebar-logo-expand {
+      & .sidebar-logo-shrink,
+      .sidebar-logo-expand {
         width: 100%;
         height: 100%;
         vertical-align: middle;
