@@ -11,7 +11,7 @@ const voyageRouter = [
     name: 'voyage',
     meta: {
       title: '船次管理',
-      icon: 'Ship'
+      icon: 'Ship',
     },
     children: [
       {

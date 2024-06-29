@@ -49,15 +49,15 @@ export const exportExcel = async ({ column, data, filename, autoWidth, format })
   // 设置单元格的默认样式
   worksheet.eachRow((row, rowIndex) => {
     row.eachCell((cell) => {
-      cell.alignment = { vertical: 'middle', horizontal: 'center' }; // 居中对齐
-      cell.font = { name: 'Arial', size: 12 }; // 设置字体
+      cell.alignment = { vertical: 'middle', horizontal: 'center' } // 居中对齐
+      cell.font = { name: 'Arial', size: 12 } // 设置字体
       // 还可以设置其他样式，比如背景色、边框等
-    });
+    })
     // 单独设置第一行字体加粗
     if (rowIndex === 1) {
-      row.font = { bold: true }; // 设置字体加粗
+      row.font = { bold: true } // 设置字体加粗
     }
-  });
+  })
   // 写入文件
   const uint8Array = format === 'xlsx' ? await workbook.xlsx.writeBuffer() : await workbook.csv.writeBuffer()
   const blob = new Blob([uint8Array], { type: 'application/octet-binary' })
@@ -73,7 +73,6 @@ export const exportExcel = async ({ column, data, filename, autoWidth, format })
     window.URL.revokeObjectURL(link.href) // 释放内存
   }
 }
-
 
 export function addCellStyle(cell, attr) {
   const { color, fontSize, horizontal, bold } = attr || {}

@@ -14,18 +14,14 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="出生日期" prop="empBirthday">
-        <el-date-picker v-model="ruleForm.empBirthday" placeholder="请输入生日" 
-        format="YYYY-MM-DD"
-        value-format="YYYY-MM-DD"/>
+        <el-date-picker v-model="ruleForm.empBirthday" placeholder="请输入生日" format="YYYY-MM-DD" value-format="YYYY-MM-DD" />
       </el-form-item>
       <el-form-item label="手机号码" prop="empMobile">
         <el-input v-model="ruleForm.empMobile" placeholder="请输入手机号码" />
       </el-form-item>
       <el-form-item label="家庭住址" prop="empAddress">
-        <el-input disabled v-model="ruleForm.empAddress"></el-input>
-        <el-cascader style="width: fit-content" @change="handleRegionChange"
-        clearable :options="region" >
-        </el-cascader>
+        <el-input v-model="ruleForm.empAddress" disabled></el-input>
+        <el-cascader style="width: fit-content" clearable :options="region" @change="handleRegionChange"> </el-cascader>
       </el-form-item>
       <el-form-item label="职务" prop="roleName">
         <el-select v-model="ruleForm.roleName" placeholder="请选择" style="width: 100%" @click="queryAllRoles">
@@ -33,8 +29,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="状态" prop="enabled">
-        <el-switch v-model="ruleForm.enabled" inline-prompt :active-value="1"
-                :inactive-value="0" active-text="启用" inactive-text="禁用"></el-switch>
+        <el-switch
+          v-model="ruleForm.enabled"
+          inline-prompt
+          :active-value="1"
+          :inactive-value="0"
+          active-text="启用"
+          inactive-text="禁用"
+        ></el-switch>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -49,17 +51,16 @@
   import service from '@/api/request'
   import { ElMessageBox, ElMessage, FormInstance } from 'element-plus'
   import { reactive, ref } from 'vue'
-  import region from '@/utils/ChinaCityJSON';
-  const handleRegionChange = (val:[]) => {
-	  //数组合成字符串
-	  ruleForm.empAddress = val.join('')
-  } 
-   
+  import region from '@/utils/ChinaCityJSON'
+  const handleRegionChange = (val: []) => {
+    //数组合成字符串
+    ruleForm.empAddress = val.join('')
+  }
 
-  const { getData } = defineProps({
-    getData:{
-      type:Function
-    }
+  const props = defineProps({
+    getData: {
+      type: Function,
+    },
   })
 
   const ruleFormRef = ref<FormInstance>()
@@ -75,8 +76,8 @@
     empName: [{ required: true, message: '请输入员工姓名', trigger: 'blur' }],
     empSex: [{ required: true, message: '请选择性别', trigger: 'change' }],
     empBirthday: [{ required: true, message: '请选择出生日期', trigger: 'blur' }],
-    empMobile: [{required: true, pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }],
-    empAddress: [{required: true, message: '请选择完整的省市辖区', trigger: 'blur' }],
+    empMobile: [{ required: true, pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }],
+    empAddress: [{ required: true, message: '请选择完整的省市辖区', trigger: 'blur' }],
     roleName: [{ required: true, message: '请选择角色', trigger: 'change' }],
   })
 
@@ -101,12 +102,10 @@
   }
 
   const queryAllRoles = () => {
-    service.get('base/role/list').then(
-      response => {
-        //提取所有角色名称
-        roleNames.value = response.data.roles.map(role => role.roleCname)
-      }
-    )
+    service.get('base/role/list').then((response) => {
+      //提取所有角色名称
+      roleNames.value = response.data.roles.map((role) => role.roleCname)
+    })
   }
 
   const show = (item = {}) => {
@@ -121,36 +120,36 @@
     dialogVisible.value = true
   }
 
-  const handleClose =  (done: () => void) => {
-     ruleFormRef.value.validate(async (valid, fields) => {
+  const handleClose = (done: () => void) => {
+    ruleFormRef.value.validate(async (valid, fields) => {
       if (valid) {
-        if(title.value == '新增用户'){
+        if (title.value == '新增用户') {
           await service({
-          method:'post',
-          url:'base/user/save',
-          data:JSON.stringify(ruleForm)
-          }).then( response => {
-            if(response.data.code == 0){
+            method: 'post',
+            url: 'base/user/save',
+            data: JSON.stringify(ruleForm),
+          }).then((response) => {
+            if (response.data.code == 0) {
               ElMessage.success(response.data.msg)
-              getData()
-            }else if(response.data.code == 500){
+              props.getData()
+            } else if (response.data.code == 500) {
               ElMessage.error(response.data.msg)
-            }else if(response.data.code == 400){
+            } else if (response.data.code == 400) {
               ElMessage.error(response.data.msg)
             }
           })
-        }else{
+        } else {
           await service({
-          method:'post',
-          url:'base/user/update',
-          data:JSON.stringify(ruleForm)
-          }).then( response => {
-            if(response.data.code == 0){
+            method: 'post',
+            url: 'base/user/update',
+            data: JSON.stringify(ruleForm),
+          }).then((response) => {
+            if (response.data.code == 0) {
               ElMessage.success(response.data.msg)
-              getData()
-            }else if(response.data.code == 500){
+              props.getData()
+            } else if (response.data.code == 500) {
               ElMessage.error(response.data.msg)
-            }else if(response.data.code == 400){
+            } else if (response.data.code == 400) {
               ElMessage.error(response.data.msg)
             }
           })
@@ -160,7 +159,6 @@
         console.log('error submit!', fields)
       }
     })
-   
   }
 
   defineExpose({
@@ -168,5 +166,4 @@
   })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

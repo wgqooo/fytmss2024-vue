@@ -17,8 +17,14 @@
         <el-input v-model="ruleForm.money" placeholder="请输入余额"></el-input>
       </el-form-item>
       <el-form-item label="状态">
-        <el-switch v-model="ruleForm.legalState" inline-prompt :active-value="'1'"
-                :inactive-value="'0'" active-text="启用" inactive-text="禁用"></el-switch>
+        <el-switch
+          v-model="ruleForm.legalState"
+          inline-prompt
+          :active-value="'1'"
+          :inactive-value="'0'"
+          active-text="启用"
+          inactive-text="禁用"
+        ></el-switch>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -33,12 +39,11 @@
   import service from '@/api/request'
   import { ElMessageBox, ElMessage, FormInstance } from 'element-plus'
   import { reactive, ref } from 'vue'
-   
 
-  const { getData } = defineProps({
-    getData:{
-      type:Function
-    }
+  const props = defineProps({
+    getData: {
+      type: Function,
+    },
   })
 
   const ruleFormRef = ref<FormInstance>()
@@ -50,9 +55,14 @@
     legalNo: [{ required: true, message: '请输入工商号', trigger: 'blur' }],
     travelName: [{ required: true, message: '请输入旅行社名', trigger: 'blur' }],
     legalName: [{ required: true, message: '请输入法人姓名', trigger: 'blur' }],
-    legalPhone: [{required: true, pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }],
-    money: [{ required: true, message: '请输入余额', trigger: 'blur' },
-    { pattern: /^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)|(0))$/, message: '非法余额', trigger: 'blur' }
+    legalPhone: [{ required: true, pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }],
+    money: [
+      { required: true, message: '请输入余额', trigger: 'blur' },
+      {
+        pattern: /^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)|(0))$/,
+        message: '非法余额',
+        trigger: 'blur',
+      },
     ],
   })
 
@@ -74,7 +84,6 @@
     })
   }
 
-
   const show = (item = {}) => {
     //console.log("item",item)
     title.value = '新增旅行社'
@@ -87,36 +96,36 @@
     dialogVisible.value = true
   }
 
-  const handleClose =  (done: () => void) => {
-     ruleFormRef.value.validate(async (valid, fields) => {
+  const handleClose = (done: () => void) => {
+    ruleFormRef.value.validate(async (valid, fields) => {
       if (valid) {
-        if(title.value == '新增旅行社'){
+        if (title.value == '新增旅行社') {
           await service({
-          method:'post',
-          url:'base/travel/save',
-          data:JSON.stringify(ruleForm)
-          }).then( response => {
-            if(response.data.code == 0){
+            method: 'post',
+            url: 'base/travel/save',
+            data: JSON.stringify(ruleForm),
+          }).then((response) => {
+            if (response.data.code == 0) {
               ElMessage.success(response.data.msg)
-              getData()
-            }else if(response.data.code == 500){
+              props.getData()
+            } else if (response.data.code == 500) {
               ElMessage.error(response.data.msg)
-            }else if(response.data.code == 400){
+            } else if (response.data.code == 400) {
               ElMessage.error(response.data.msg)
             }
           })
-        }else{
+        } else {
           await service({
-          method:'post',
-          url:'base/travel/update',
-          data:JSON.stringify(ruleForm)
-          }).then( response => {
-            if(response.data.code == 0){
+            method: 'post',
+            url: 'base/travel/update',
+            data: JSON.stringify(ruleForm),
+          }).then((response) => {
+            if (response.data.code == 0) {
               ElMessage.success(response.data.msg)
-              getData()
-            }else if(response.data.code == 500){
+              props.getData()
+            } else if (response.data.code == 500) {
               ElMessage.error(response.data.msg)
-            }else if(response.data.code == 400){
+            } else if (response.data.code == 400) {
               ElMessage.error(response.data.msg)
             }
           })
@@ -126,7 +135,6 @@
         console.log('error submit!', fields)
       }
     })
-   
   }
 
   defineExpose({
@@ -134,5 +142,4 @@
   })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

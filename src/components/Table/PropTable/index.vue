@@ -20,7 +20,7 @@
           :border="true"
           @selection-change="(val) => emit('selection-change', val)"
         >
-          <template v-for="(item,index) in columns">
+          <template v-for="(item, index) in columns">
             <el-table-column v-if="item.slot" v-bind="{ ...item, ...{ prop: item.name } }">
               <template #default="scope">
                 <slot :name="item.name" :item="item" :row="scope.row"></slot>
@@ -61,8 +61,8 @@
   import type { FormInstance } from 'element-plus'
   const emit = defineEmits(['reset', 'onSubmit', 'selection-change'])
   let props = defineProps({
-    showSearch:{
-      default: true
+    showSearch: {
+      default: true,
     },
     columns: {
       type: Array,
@@ -74,7 +74,7 @@
     },
     resPage: {
       type: Object,
-      default: {}
+      default: () => {},
     },
     loading: {
       type: Boolean,
@@ -82,11 +82,11 @@
     },
     handleSizeChange: {
       type: Function,
-      default: () => {}
+      default: () => {},
     },
     handleCurrentChange: {
       type: Function,
-      default: () => {}
+      default: () => {},
     },
   })
 
@@ -96,12 +96,11 @@
   })
 
   const getIndex = (index: number) => {
-    if(JSON.stringify(props.resPage) === '{}'){
+    if (JSON.stringify(props.resPage) === '{}') {
       return index + 1
     }
     return index + 1 + (props.resPage.pageNum - 1) * props.resPage.pageSize
   }
-
 
   let obj = {}
   let search = []
@@ -126,7 +125,6 @@
     })
     emit('reset')
   }
-  
 </script>
 <style scoped lang="scss">
   .edit-input {

@@ -4,7 +4,7 @@ export const columns = [
     label: '序号',
     span: 8,
     width: 55,
-    align:'center',
+    align: 'center',
     fixed: 'left',
     // 添加 index 属性用于渲染序号
     index: true,
@@ -21,7 +21,7 @@ export const columns = [
     label: '护照号',
     valueType: 'input',
     width: 150,
-    align:'center',
+    align: 'center',
     span: 8,
   },
   {
@@ -79,5 +79,5 @@ export const columns = [
     align: 'center',
     span: 8,
     width: 100,
-  }
+  },
 ]

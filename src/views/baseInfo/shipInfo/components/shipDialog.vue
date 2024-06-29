@@ -50,10 +50,10 @@
   import { ElMessageBox, ElMessage, FormInstance } from 'element-plus'
   import { reactive, ref } from 'vue'
 
-  const { getData } = defineProps({
-    getData:{
-      type:Function
-    }
+  const props = defineProps({
+    getData: {
+      type: Function,
+    },
   })
 
   const ruleFormRef = ref<FormInstance>()
@@ -64,18 +64,21 @@
   const rules = reactive({
     shipNo: [{ required: true, message: '请输入船舷号', trigger: 'blur' }],
     shipName: [{ required: true, message: '请输入船名', trigger: 'blur' }],
-    vipSeat: [{ required: true, message: '请输入VIP座位数量', trigger: 'blur' },
-    { pattern: /^[0-9]\d*$/, message: '非法的VIP座位数量', trigger: 'blur' }
+    vipSeat: [
+      { required: true, message: '请输入VIP座位数量', trigger: 'blur' },
+      { pattern: /^[0-9]\d*$/, message: '非法的VIP座位数量', trigger: 'blur' },
     ],
-    firSeat: [{ required: true, message: '请输入一等座位数量', trigger: 'blur' },
-    { pattern: /^[0-9]\d*$/, message: '非法的一等座位数量', trigger: 'blur' }
+    firSeat: [
+      { required: true, message: '请输入一等座位数量', trigger: 'blur' },
+      { pattern: /^[0-9]\d*$/, message: '非法的一等座位数量', trigger: 'blur' },
     ],
-    secSeat: [{ required: true, message: '请输入二等座位数量', trigger: 'blur' },
-    { pattern: /^[0-9]\d*$/, message: '非法的二等座位数量', trigger: 'blur' }
+    secSeat: [
+      { required: true, message: '请输入二等座位数量', trigger: 'blur' },
+      { pattern: /^[0-9]\d*$/, message: '非法的二等座位数量', trigger: 'blur' },
     ],
     seatDis: [{ required: true, message: '请选择船型', trigger: 'blur' }],
     shiptimeState: [{ required: true, message: '请选择状态', trigger: 'blur' }],
-    shipMemo: [{ required: true, message: '请选择所属', trigger: 'blur' }]
+    shipMemo: [{ required: true, message: '请选择所属', trigger: 'blur' }],
   })
 
   const ruleForm = reactive({
@@ -98,7 +101,6 @@
     })
   }
 
-
   const show = (item = {}) => {
     //console.log("item",item)
     title.value = '新增船只'
@@ -111,36 +113,36 @@
     dialogVisible.value = true
   }
 
-  const handleClose =  (done: () => void) => {
-     ruleFormRef.value.validate(async (valid, fields) => {
+  const handleClose = (done: () => void) => {
+    ruleFormRef.value.validate(async (valid, fields) => {
       if (valid) {
-        if(title.value == '新增船只'){
+        if (title.value == '新增船只') {
           await service({
-          method:'post',
-          url:'base/ship/save',
-          data:JSON.stringify(ruleForm)
-          }).then( response => {
-            if(response.data.code == 0){
+            method: 'post',
+            url: 'base/ship/save',
+            data: JSON.stringify(ruleForm),
+          }).then((response) => {
+            if (response.data.code == 0) {
               ElMessage.success(response.data.msg)
-              getData()
-            }else if(response.data.code == 500){
+              props.getData()
+            } else if (response.data.code == 500) {
               ElMessage.error(response.data.msg)
-            }else if(response.data.code == 400){
+            } else if (response.data.code == 400) {
               ElMessage.error(response.data.msg)
             }
           })
-        }else{
+        } else {
           await service({
-          method:'post',
-          url:'base/ship/update',
-          data:JSON.stringify(ruleForm)
-          }).then( response => {
-            if(response.data.code == 0){
+            method: 'post',
+            url: 'base/ship/update',
+            data: JSON.stringify(ruleForm),
+          }).then((response) => {
+            if (response.data.code == 0) {
               ElMessage.success(response.data.msg)
-              getData()
-            }else if(response.data.code == 500){
+              props.getData()
+            } else if (response.data.code == 500) {
               ElMessage.error(response.data.msg)
-            }else if(response.data.code == 400){
+            } else if (response.data.code == 400) {
               ElMessage.error(response.data.msg)
             }
           })
@@ -150,7 +152,6 @@
         console.log('error submit!', fields)
       }
     })
-   
   }
 
   defineExpose({
@@ -158,5 +159,4 @@
   })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
