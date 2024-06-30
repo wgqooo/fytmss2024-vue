@@ -206,7 +206,7 @@
   <OrderDialog
     ref="orderDialog"
     :choose-travellers="chooseTravellers"
-    :voy-data="voyData"
+    :voy-data="props.voyData"
     :get-total-money="getTotalMoney"
     :generate-order="generateOrder"
   />

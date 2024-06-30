@@ -517,18 +517,6 @@
     --el-radio-button-disabled-checked-fill: gray;
   }
 
-  // ::v-deep .el-checkbox__input.is-checked .el-checkbox__inner,
-  // ::v-deep .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-  // border-color: HotPink !important;
-  // background-color: HotPink !important;
-  // }
-
-  // ::v-deep .el-checkbox__input .el-checkbox__inner {
-  // border-color: #999; /* 修改为你希望的未选中状态的边框颜色 */
-  // }
-  // ::v-deep .el-checkbox__inner:hover {
-  // border-color: #00BFFF; /* 修改为你希望的未选中状态的边框颜色 */
-  // }
   .el-table :deep(.el-checkbox__input.is-checked .el-checkbox__inner),
   .el-table :deep(.el-checkbox__input.is-indeterminate .el-checkbox__inner) {
     border-color: HotPink !important;

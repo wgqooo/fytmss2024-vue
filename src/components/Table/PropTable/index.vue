@@ -1,6 +1,6 @@
 <template>
   <div class="zb-pro-table">
-    <div v-if="showSearch" class="header">
+    <div v-if="props.showSearch" class="header">
       <SearchForm :columns="baseFormColumns" @submit="onSubmit" />
     </div>
 
@@ -16,11 +16,11 @@
         <el-table
           v-loading="loading"
           class="zb-table"
-          :data="data"
+          :data="props.data"
           :border="true"
           @selection-change="(val) => emit('selection-change', val)"
         >
-          <template v-for="(item, index) in columns">
+          <template v-for="(item, index) in props.columns">
             <el-table-column v-if="item.slot" v-bind="{ ...item, ...{ prop: item.name } }">
               <template #default="scope">
                 <slot :name="item.name" :item="item" :row="scope.row"></slot>
@@ -42,11 +42,11 @@
       <!-- ------------分页--------------->
       <div class="pagination">
         <el-pagination
-          :current-page="resPage.pageNum"
-          :page-size="resPage.pageSize"
+          :current-page="props.resPage.pageNum"
+          :page-size="props.resPage.pageSize"
           background="true"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="resPage.total"
+          :total="props.resPage.total"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
@@ -64,17 +64,26 @@
     showSearch: {
       default: true,
     },
+    pagination: {
+      default: true,
+    },
     columns: {
       type: Array,
-      default: () => [],
+      default: () => {
+        return []
+      },
     },
     data: {
       type: Array,
-      default: () => [],
+      default: () => {
+        return []
+      },
     },
     resPage: {
       type: Object,
-      default: () => {},
+      default: () => {
+        return {}
+      },
     },
     loading: {
       type: Boolean,
@@ -96,10 +105,12 @@
   })
 
   const getIndex = (index: number) => {
-    if (JSON.stringify(props.resPage) === '{}') {
+    if (props.resPage === undefined) {
+      //console.log()
       return index + 1
+    } else if (props.resPage != undefined) {
+      return index + 1 + (props.resPage.pageNum - 1) * props.resPage.pageSize
     }
-    return index + 1 + (props.resPage.pageNum - 1) * props.resPage.pageSize
   }
 
   let obj = {}
@@ -174,13 +185,13 @@
         height: 100%;
       }
     }
-    ::v-deep {
-      .el-table__header th {
-        font-size: 15px;
-        font-weight: 700;
-        color: #252525;
-      }
-    }
+    // ::v-deep {
+    //   .el-table__header th {
+    //     font-size: 15px;
+    //     font-weight: 700;
+    //     color: #252525;
+    //   }
+    // }
     .pagination {
       width: 100%;
       display: flex;

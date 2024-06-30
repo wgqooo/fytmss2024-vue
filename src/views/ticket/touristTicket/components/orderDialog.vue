@@ -42,7 +42,7 @@
         </el-descriptions-item>
       </el-descriptions>
     </div>
-    <el-table :data="chooseTravellers" style="width: 100%; height: 100%">
+    <el-table :data="props.chooseTravellers" style="width: 100%; height: 100%">
       <el-table-column type="index" fixed label="序号" align="center" width="55">
         <template #default="{ $index }">
           {{ getIndex($index) }}
