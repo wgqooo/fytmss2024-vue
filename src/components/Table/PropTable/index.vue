@@ -31,10 +31,11 @@
                 {{ getIndex($index) }}
               </template>
             </el-table-column>
+            <el-table-column v-else-if="item.selection" v-bind="{ ...item, ...{ prop: item.name } }"> </el-table-column>
             <el-table-column v-else v-bind="{ ...item, ...{ prop: item.name } }">
-              <!-- <template #default="scope">
-                {{ item.name ? scope.row[item.name] : item.value }}
-              </template> -->
+              <template #default="{ row }">
+                <span :style="{ color: item.color }">{{ row[item.name] }}</span>
+              </template>
             </el-table-column>
           </template>
         </el-table>
@@ -57,7 +58,6 @@
 <script lang="ts" setup>
   import { computed, ref, reactive } from 'vue'
   import SearchForm from '@/components/SearchForm/index.vue'
-  import { ElMessage, ElMessageBox } from 'element-plus'
   import type { FormInstance } from 'element-plus'
   const emit = defineEmits(['reset', 'onSubmit', 'selection-change'])
   let props = defineProps({
@@ -105,10 +105,9 @@
   })
 
   const getIndex = (index: number) => {
-    if (props.resPage === undefined) {
-      //console.log()
+    if (JSON.stringify(props.resPage) === '{}') {
       return index + 1
-    } else if (props.resPage != undefined) {
+    } else {
       return index + 1 + (props.resPage.pageNum - 1) * props.resPage.pageSize
     }
   }
@@ -126,8 +125,8 @@
   const formSearchData = ref(search)
   const formInline = reactive(obj)
 
-  const onSubmit = () => {
-    emit('onSubmit', formInline)
+  const onSubmit = (val) => {
+    emit('onSubmit', val)
   }
 
   const reset = (formEl: FormInstance | undefined) => {

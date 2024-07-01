@@ -24,7 +24,10 @@
         :disabled-date="disabledDate"
       />
     </span>
-    <el-button type="primary" @click="queryVoys">查询</el-button>
+    <span class="queryParams">
+      <el-input v-model="page.queryParams" placeholder="护照号/姓名"></el-input>
+    </span>
+    <el-button type="primary" @click="queryOrders">查询</el-button>
   </div>
   <div ref="appContainer" class="app-container">
     <PropTable
@@ -43,18 +46,17 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref, reactive, onMounted, nextTick } from 'vue'
+  import { ref, reactive, onMounted } from 'vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import PropTable from '@/components/Table/PropTable/index.vue'
   import { Traveller } from '@/types/traveller'
   import service from '@/api/request'
   import { Page } from '@/types/page'
-  import { columns } from './constants.tsx'
-  import { getCurrentDate } from '@/utils/dateFormat.js'
+  import { columns } from './constants-history.jsx'
+  import { getCurrentDate, getCurrentTime } from '@/utils/dateFormat.js'
 
   const loading = ref(true)
   const appContainer = ref(null)
-  const travellerDialog = ref()
   const tableData = ref<Traveller[]>([])
   const dateScope = ref([getCurrentDate(), getCurrentDate()])
   const resPage = ref<Page>({
@@ -71,9 +73,10 @@
   const page = reactive({
     index: 1,
     size: 10,
-    travelType: '全部',
-    startDate: dateScope.value[0],
-    endDate: dateScope.value[1],
+    travelType: '',
+    startDate: getCurrentDate() + ' ' + '00:00:00',
+    endDate: getCurrentDate() + ' ' + getCurrentTime(),
+    queryParams: '',
   })
 
   const disabledDate = (date) => {
@@ -104,15 +107,18 @@
     tableData.value = resPage.value.list
   }
 
+  const queryOrders = () => {
+    if (dateScope.value[1] === getCurrentDate()) page.endDate = dateScope.value[1] + ' ' + getCurrentTime()
+    else page.endDate = dateScope.value[1]
+    page.startDate = dateScope.value[0] + ' ' + '00:00:00'
+    getData()
+  }
+
   let baseColumns = reactive(columns)
   const selectObj = ref([])
 
   const selectionChange = (val) => {
     selectObj.value = val
-  }
-
-  const edit = (row) => {
-    travellerDialog.value.show(row)
   }
 
   const reset = () => {
@@ -126,17 +132,15 @@
   const onSubmit = (val) => {
     ElMessage.success('触发查询方法')
     loading.value = true
+    console.log(val)
     setTimeout(() => {
       loading.value = false
-    }, 500)
+    }, 200)
   }
 
   onMounted(() => {
-    nextTick(() => {
-      // let data = appContainer.value.
-    })
     setTimeout(() => {
-      //getData()
+      getData()
       loading.value = false
     }, 200)
   })

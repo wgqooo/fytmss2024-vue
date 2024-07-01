@@ -2,31 +2,6 @@
   display: flex;
   flex-direction: row;
 }
-.util {
-  border-bottom: 5px solid #ecf5ff;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background: white;
-  box-shadow: 0 0 12px rgb(0 0 0 / 5%);
-  font-weight: bold;
-  // display: flex;
-  justify-content: flex-end;
-  flex-shrink: 0;
-  .startPort {
-    margin-left: 30px;
-    margin-right: 120px;
-  }
-  .startTime {
-    margin-right: 100px;
-  }
-  .queryParams {
-    width: 50px;
-    margin-right: 50px;
-    .el-input {
-      width: auto;
-    }
-  }
-}
 .m-ticket-table {
   //display: flex;
   flex-direction: column;
@@ -72,6 +47,10 @@
         background-color: #fe83c6;
         border-color: #fe83c6;
       }
+      // .nextStep:focus,.previousStep:focus  {
+      //   background-color:  #FE83C6;
+      //   border-color:  #FE83C6;
+      // }
     }
     .theSteps {
       margin-top: 30px;
@@ -112,6 +91,23 @@
       }
       border-width: 5px; /* 调整分割线的粗细 */
       border-color: #8dd9df; /* 设置分割线的颜色 */
+    }
+    .util {
+      border-bottom: 5px solid #ecf5ff;
+      margin-top: 0px;
+      margin-bottom: 30px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      font-weight: bold;
+      // display: flex;
+      justify-content: flex-end;
+      flex-shrink: 0;
+      .startPort {
+        margin-right: 120px;
+      }
+      .startTime {
+        margin-right: 100px;
+      }
     }
     .table-inner {
       .el-table :deep(.el-checkbox__input.is-checked .el-checkbox__inner),

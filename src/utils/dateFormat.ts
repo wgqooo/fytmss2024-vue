@@ -18,6 +18,15 @@ export function getCurrentDate() {
   return `${year}-${month}-${day}`
 }
 
+export function getNextDayDate() {
+  const now = new Date()
+  now.setDate(now.getDate() + 1) // 获取明天的日期
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0') // 月份从0开始，使用padStart补0
+  const day = String(now.getDate()).padStart(2, '0') // 获取日期并补0
+  return `${year}-${month}-${day}`
+}
+
 export function getCurrentTime() {
   const now = new Date()
   const hours = String(now.getHours()).padStart(2, '0') // 获取小时并补0

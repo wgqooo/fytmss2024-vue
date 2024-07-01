@@ -19,6 +19,7 @@ export const columns = [
   {
     name: 'passportNo',
     label: '护照号',
+    search: true,
     valueType: 'input',
     width: 150,
     align: 'center',
@@ -27,9 +28,18 @@ export const columns = [
   {
     name: 'trName',
     label: '姓名',
+    search: true,
+    valueType: 'date-picker',
     align: 'center',
     span: 8,
     width: 180,
+  },
+  {
+    name: 'travelType',
+    label: '出入境',
+    align: 'center',
+    span: 8,
+    width: 100,
   },
   {
     name: 'startVoyNo',
@@ -68,6 +78,7 @@ export const columns = [
   },
   {
     name: 'state',
+    color: 'blue',
     label: '状态',
     align: 'center',
     span: 8,
@@ -75,6 +86,7 @@ export const columns = [
   },
   {
     name: 'tickCost',
+    color: 'red',
     label: '订票金额',
     align: 'center',
     span: 8,

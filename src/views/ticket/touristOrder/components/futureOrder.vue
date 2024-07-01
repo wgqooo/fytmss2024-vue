@@ -1,14 +1,15 @@
 <template>
   <div class="util">
     <span class="startPort"
-      >订票时间：
-      <el-select v-model="startPort">
-        <el-option label="抚远" :value="0"></el-option>
-        <el-option label="哈巴洛夫斯克" :value="1"></el-option>
+      >出入境：
+      <el-select v-model="page.travelType">
+        <el-option label="全部" value=""></el-option>
+        <el-option label="散客出境" value="散客出境"></el-option>
+        <el-option label="散客入境" value="散客入境"></el-option>
       </el-select>
     </span>
     <span class="startTime"
-      >出发日期：
+      >乘船日期：
       <el-date-picker
         v-model="dateScope"
         type="daterange"
@@ -23,7 +24,10 @@
         :disabled-date="disabledDate"
       />
     </span>
-    <el-button type="primary" @click="queryVoys">查询</el-button>
+    <span class="queryParams">
+      <el-input v-model="page.queryParams" placeholder="护照号/姓名"></el-input>
+    </span>
+    <el-button type="primary" @click="queryOrders">查询</el-button>
   </div>
   <div ref="appContainer" class="app-container">
     <PropTable
@@ -38,6 +42,11 @@
       @reset="reset"
       @on-submit="onSubmit"
     >
+      <template #operation="scope">
+        <el-button type="primary" size="small" icon="Edit" @click="edit(scope.row)"> 退票 </el-button>
+        <el-button type="danger" size="small" icon="Delete" @click="del(scope.row)"> 改签 </el-button>
+        <el-button type="danger" size="small" icon="Delete" @click="del(scope.row)"> 选座 </el-button>
+      </template>
     </PropTable>
   </div>
 </template>
@@ -48,12 +57,14 @@
   import { Traveller } from '@/types/traveller'
   import service from '@/api/request'
   import { Page } from '@/types/page'
-  import { columns } from './constants.tsx'
+  import { columns } from './constants-future.jsx'
+  import { getCurrentDate, getCurrentTime, getNextDayDate } from '@/utils/dateFormat.js'
 
   const loading = ref(true)
   const appContainer = ref(null)
   const travellerDialog = ref()
   const tableData = ref<Traveller[]>([])
+  const dateScope = ref([getCurrentDate(), getCurrentDate()])
   const resPage = ref<Page>({
     size: 0,
     pageSize: 0,
@@ -68,6 +79,10 @@
   const page = reactive({
     index: 1,
     size: 10,
+    travelType: '',
+    startDate: getCurrentDate() + ' ' + getCurrentTime(),
+    endDate: getCurrentDate() + ' ' + '23:59:59',
+    queryParams: '',
   })
 
   const handleSizeChange = (val: number) => {
@@ -92,28 +107,20 @@
     tableData.value = resPage.value.list
   }
 
+  const queryOrders = () => {
+    if (dateScope.value[0] === getCurrentDate()) page.startDate = dateScope.value[0] + ' ' + getCurrentTime()
+    else page.startDate = dateScope.value[0]
+    page.endDate = dateScope.value[1] + ' ' + '23:59:59'
+    getData()
+  }
+
   let baseColumns = reactive(columns)
   const selectObj = ref([])
 
-  const add = () => {
-    travellerDialog.value.show()
-  }
-
-  const batchDelete = () => {
-    if (!selectObj.value.length) {
-      return ElMessage.error('未选中任何行')
-    }
-    ElMessageBox.confirm('你确定要删除选中项吗?', '温馨提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-      draggable: true,
-    })
-      .then(() => {
-        ElMessage.success('模拟删除成功')
-        list.value = list.value.concat([])
-      })
-      .catch(() => {})
+  const disabledDate = (date) => {
+    const today = new Date() // 获取当前日期
+    today.setHours(0, 0, 0, 0) // 将时间设置为0时0分0秒0毫秒，即当天的开始时间
+    return date.getTime() < today.getTime() // 禁用过去的日期
   }
 
   const selectionChange = (val) => {
@@ -122,31 +129,6 @@
 
   const edit = (row) => {
     travellerDialog.value.show(row)
-  }
-
-  const del = (row) => {
-    ElMessageBox.confirm('你确定要删除当前项吗?', '温馨提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-      draggable: true,
-    }).then(() => {
-      service({
-        method: 'delete',
-        url: 'base/traveller/delete',
-        //在axios接口封装是接收参数是一个object类型，不能直接params或者data当成一个属性或者直接赋值
-        params: {
-          passportNo: row.passportNo,
-        },
-      }).then((response) => {
-        if (response.data.code == 0) {
-          ElMessage.success(response.data.msg)
-          getData()
-        } else {
-          ElMessage.error(response.data.msg)
-        }
-      })
-    })
   }
 
   const reset = () => {
@@ -170,7 +152,7 @@
       // let data = appContainer.value.
     })
     setTimeout(() => {
-      //getData()
+      getData()
       loading.value = false
     }, 200)
   })

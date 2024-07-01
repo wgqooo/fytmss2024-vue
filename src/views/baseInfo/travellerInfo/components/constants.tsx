@@ -4,6 +4,7 @@ export const columns = [
     span: 8,
     align: 'center',
     fixed: 'left',
+    selection: true,
   },
   {
     type: 'index',
