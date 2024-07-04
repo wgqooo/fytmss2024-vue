@@ -1,19 +1,20 @@
 <template>
-  <el-dialog v-model="dialogVisible" :title="title" width="30%" @close="close">
+  <el-dialog v-model="dialogVisible" :title="title" width="40%" @close="close">
     <div style="display: flex">
-      <svg-icon style="width: 50%; height: 280px; margin-right: 10px" icon-class="boat2"></svg-icon>
+      <svg-icon style="width: 50%; height: 320px; margin-right: 10px" icon-class="boat2"></svg-icon>
       <el-descriptions class="orderDescriptions" :column="1" :size="size" border>
         <el-descriptions-item>
           <template #label>
-            <div class="cell-item"> 单程 </div>
+            <div class="cell-item"> 往返 </div>
           </template>
-          {{ props.voyData[0]['voyNo'] }}
+          {{ props.voyData[0]['voyNo'] }}⬅➡
+          {{ props.voyData[1]['voyNo'] }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
             <div class="cell-item"> 港口 </div>
           </template>
-          {{ props.voyData[0]['startPort'] === 0 ? '抚远' : '哈巴洛夫斯克' }} --->
+          {{ props.voyData[0]['startPort'] === 0 ? '抚远' : '哈巴洛夫斯克' }} ⬅➡
           {{ props.voyData[0]['startPort'] === 0 ? '哈巴洛夫斯克' : '抚远' }}
         </el-descriptions-item>
         <el-descriptions-item>
@@ -21,6 +22,12 @@
             <div class="cell-item"> 出发时间 </div>
           </template>
           {{ props.voyData[0]['voyDate'] }} / {{ props.voyData[0]['startTime'] }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item"> 返回时间 </div>
+          </template>
+          {{ props.voyData[1]['voyDate'] }} / {{ props.voyData[1]['startTime'] }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
@@ -55,9 +62,14 @@
           {{ scope.row.ticketType === 0 ? '成人票' : '儿童票' }}
         </template>
       </el-table-column>
-      <el-table-column prop="seatType" label="座位等级" align="center">
+      <el-table-column prop="startSeat" label="出发座位" align="center">
         <template #default="scope">
-          {{ scope.row.seatType === 0 ? 'VIP座' : scope.row.seatType === 1 ? '一等座' : '二等座' }}
+          {{ scope.row.startSeat }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="returnSeat" label="返回座位" align="center">
+        <template #default="scope">
+          {{ scope.row.returnSeat }}
         </template>
       </el-table-column>
       <el-table-column prop="ticketPrice" label="票价" align="center">

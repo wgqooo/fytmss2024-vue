@@ -55,9 +55,9 @@
           {{ scope.row.ticketType === 0 ? '成人票' : '儿童票' }}
         </template>
       </el-table-column>
-      <el-table-column prop="seatType" label="座位等级" align="center">
+      <el-table-column prop="startSeat" label="座位等级" align="center">
         <template #default="scope">
-          {{ scope.row.seatType === 0 ? 'VIP座' : scope.row.seatType === 1 ? '一等座' : '二等座' }}
+          {{ scope.row.startSeat }}
         </template>
       </el-table-column>
       <el-table-column prop="ticketPrice" label="票价" align="center">

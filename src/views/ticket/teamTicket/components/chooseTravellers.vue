@@ -1,8 +1,13 @@
 <template>
   <div class="footer" style="margin-bottom: 30px">
     <div class="table-inner">
-      <span style="font-weight: bold; font-size: 1.5em">已选航次</span>
+      <span style="font-weight: bold; font-size: 1.5em">往返航次</span>
       <el-table :data="voyData" style="width: 100%">
+        <el-table-column type="index" fixed align="center" width="150px">
+          <template #default="{ $index }">
+            <div style="font-weight: bold; font-size: 1.2em">{{ $index === 0 ? '出发航次' : '返回航次' }}</div>
+          </template>
+        </el-table-column>
         <el-table-column label="船次信息" align="center">
           <template #default="scope">
             <div style="font-weight: bold; font-size: 1.5em; align-items: center">
@@ -64,17 +69,17 @@
           <template #default="scope">
             <div style="font-weight: bold; font-size: 1.5em; align-items: center">
               <svg-icon style="width: 30px; height: 30px; margin-right: 10px" icon-class="vip-seat"></svg-icon>
-              <span>{{ scope.row.vipVisa }}</span>
+              <span>{{ scope.row.vipPrice }}</span>
               <svg-icon style="width: 20px; height: 20px; margin-right: 10px" icon-class="rmb"></svg-icon>
             </div>
             <div style="font-weight: bold; font-size: 1.5em; align-items: center">
               <svg-icon style="width: 30px; height: 30px; margin-right: 10px" icon-class="fir-seat"></svg-icon>
-              <span>{{ scope.row.firVisa }}</span>
+              <span>{{ scope.row.firPrice }}</span>
               <svg-icon style="width: 20px; height: 20px; margin-right: 10px" icon-class="rmb"></svg-icon>
             </div>
             <div style="font-weight: bold; font-size: 1.5em; align-items: center">
               <svg-icon style="width: 30px; height: 30px; margin-right: 10px" icon-class="sec-seat"></svg-icon>
-              <span>{{ scope.row.secVisa }}</span>
+              <span>{{ scope.row.secPrice }}</span>
               <svg-icon style="width: 20px; height: 20px; margin-right: 10px" icon-class="rmb"></svg-icon>
             </div>
           </template>
@@ -125,7 +130,7 @@
         <el-table-column prop="trBorAdd" label="出生地" align="center" width="100" />
         <el-table-column prop="trNation" label="国籍" align="center" width="100" />
         <el-table-column prop="travelName" fixed="right" label="旅行社" align="center" width="150" />
-        <el-table-column prop="hasTicket" fixed="right" label="已购买" align="center" width="100">
+        <el-table-column prop="hasTicket" fixed="right" label="航次冲突" align="center" width="100">
           <template #default="scope">
             <div :style="{ 'background-color': scope.row.hasTicket !== 0 ? '#bfc' : '' }">
               {{ scope.row.hasTicket === 0 ? '否' : '是' }}
@@ -156,12 +161,21 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column prop="seatType" label="座位等级" align="center">
+        <el-table-column prop="startSeat" label="出发座位" align="center">
           <template #default="scope">
-            <el-select v-model="scope.row.seatType" @change="changeType(scope.row)">
-              <el-option label="VIP座" :value="0"></el-option>
-              <el-option label="一等座" :value="1"></el-option>
-              <el-option label="二等座" :value="2"></el-option>
+            <el-select v-model="scope.row.startSeat" @change="changeType(scope.row)">
+              <el-option label="VIP座" value="VIP座"></el-option>
+              <el-option label="一等座" value="一等座"></el-option>
+              <el-option label="二等座" value="二等座"></el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+        <el-table-column prop="returnSeat" label="返回座位" align="center">
+          <template #default="scope">
+            <el-select v-model="scope.row.returnSeat" @change="changeType(scope.row)">
+              <el-option label="VIP座" value="VIP座"></el-option>
+              <el-option label="一等座" value="一等座"></el-option>
+              <el-option label="二等座" value="二等座"></el-option>
             </el-select>
           </template>
         </el-table-column>
@@ -238,7 +252,8 @@
     size: 10,
     passportNo: '',
     trName: '',
-    voyTime: props.voyData[0]['voyDate'] + ' ' + props.voyData[0]['startTime'],
+    startDate: props.voyData[0]['voyDate'] + ' ' + props.voyData[0]['startTime'],
+    returnDate: props.voyData[1]['voyDate'] + ' ' + props.voyData[1]['startTime'],
   })
   const loading = ref(true)
   const tableData = ref<Traveller[]>([])
@@ -256,8 +271,9 @@
   const pageSizes = reactive([5, 10, 20, 30, 50, 100])
   const chooseTravellers = ref([])
   const ticketType = ref(0)
-  const seatType = ref(2)
-  const tickCost = ref(props.voyData[0]['secVisa'])
+  const startSeat = ref('二等座')
+  const returnSeat = ref('二等座')
+  const tickCost = ref(props.voyData[0]['secPrice'])
   const payment = ref(0)
   const orderDialog = ref()
 
@@ -289,7 +305,8 @@
           passportNo: traveller.passportNo,
           trName: traveller.trName,
           ticketType: ticketType.value,
-          seatType: seatType.value,
+          startSeat: startSeat.value,
+          returnSeat: returnSeat.value,
           tickCost: tickCost.value,
         })),
       )
@@ -297,9 +314,9 @@
   const changeType = (row) => {
     if (row.ticketType === 1) row.tickCost = 0
     else {
-      if (row.seatType === 0) row.tickCost = props.voyData[0]['vipVisa']
-      else if (row.seatType === 1) row.tickCost = props.voyData[0]['firVisa']
-      else row.tickCost = props.voyData[0]['secVisa']
+      if (row.startSeat === 'VIP座' || row.returnSeat === 'VIP座') row.tickCost = props.voyData[0]['vipPrice']
+      else if (row.startSeat === '一等座' || row.returnSeat === '一等座') row.tickCost = props.voyData[0]['firPrice']
+      else row.tickCost = props.voyData[0]['secPrice']
     }
   }
   //展示
@@ -366,19 +383,21 @@
       }
       traveller['startDate'] = props.voyData[0]['voyDate'] + ' ' + props.voyData[0]['startTime']
       traveller['startVoyNo'] = props.voyData[0]['voyNo']
-      traveller['startSeat'] = traveller['seatType'] === 0 ? 'VIP座' : traveller['seatType'] === 1 ? '一等座' : '二等座'
+      traveller['returnDate'] = props.voyData[1]['voyDate'] + ' ' + props.voyData[1]['startTime']
+      traveller['returnVoyNo'] = props.voyData[1]['voyNo']
       traveller['state'] = '未检票'
+      traveller['returnState'] = '未检票'
       traveller['payType'] = '现金'
       traveller['isGuide'] = '否'
       traveller['tickType'] = traveller['ticketType'] === 0 ? '成人' : '儿童'
-      traveller['travellerType'] = '散客'
-      traveller['travelType'] = props.voyData[0]['startPort'] === 0 ? '散客出境' : '散客入境'
+      traveller['travellerType'] = '团体'
+      traveller['travelType'] = props.voyData[0]['startPort'] === 0 ? '中团出境' : '俄团入境'
       traveller['orderName'] = username
       traveller['identity'] = '旅客'
     })
     service({
       method: 'post',
-      url: 'ticket/touristBook/addTickets',
+      url: 'ticket/teamBook/addTickets',
       data: JSON.stringify(chooseTravellers.value),
     }).then((response) => {
       if (response.data.code === 0) {

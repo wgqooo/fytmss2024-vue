@@ -109,7 +109,7 @@
 
   const queryOrders = () => {
     if (dateScope.value[1] === getCurrentDate()) page.endDate = dateScope.value[1] + ' ' + getCurrentTime()
-    else page.endDate = dateScope.value[1]
+    else page.endDate = dateScope.value[1] + ' ' + '23:59:59'
     page.startDate = dateScope.value[0] + ' ' + '00:00:00'
     getData()
   }

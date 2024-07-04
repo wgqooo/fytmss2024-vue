@@ -125,7 +125,7 @@
         <el-table-column prop="trBorAdd" label="出生地" align="center" width="100" />
         <el-table-column prop="trNation" label="国籍" align="center" width="100" />
         <el-table-column prop="travelName" fixed="right" label="旅行社" align="center" width="150" />
-        <el-table-column prop="hasTicket" fixed="right" label="已购买" align="center" width="100">
+        <el-table-column prop="hasTicket" fixed="right" label="航次冲突" align="center" width="100">
           <template #default="scope">
             <div :style="{ 'background-color': scope.row.hasTicket !== 0 ? '#bfc' : '' }">
               {{ scope.row.hasTicket === 0 ? '否' : '是' }}
@@ -156,12 +156,12 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column prop="seatType" label="座位等级" align="center">
+        <el-table-column prop="startSeat" label="座位等级" align="center">
           <template #default="scope">
-            <el-select v-model="scope.row.seatType" @change="changeType(scope.row)">
-              <el-option label="VIP座" :value="0"></el-option>
-              <el-option label="一等座" :value="1"></el-option>
-              <el-option label="二等座" :value="2"></el-option>
+            <el-select v-model="scope.row.startSeat" @change="changeType(scope.row)">
+              <el-option label="VIP座" value="VIP座"></el-option>
+              <el-option label="一等座" value="一等座"></el-option>
+              <el-option label="二等座" value="二等座"></el-option>
             </el-select>
           </template>
         </el-table-column>
@@ -238,7 +238,7 @@
     size: 10,
     passportNo: '',
     trName: '',
-    voyTime: props.voyData[0]['voyDate'] + ' ' + props.voyData[0]['startTime'],
+    startDate: props.voyData[0]['voyDate'] + ' ' + props.voyData[0]['startTime'],
   })
   const loading = ref(true)
   const tableData = ref<Traveller[]>([])
@@ -256,7 +256,7 @@
   const pageSizes = reactive([5, 10, 20, 30, 50, 100])
   const chooseTravellers = ref([])
   const ticketType = ref(0)
-  const seatType = ref(2)
+  const startSeat = ref('二等座')
   const tickCost = ref(props.voyData[0]['secVisa'])
   const payment = ref(0)
   const orderDialog = ref()
@@ -289,7 +289,7 @@
           passportNo: traveller.passportNo,
           trName: traveller.trName,
           ticketType: ticketType.value,
-          seatType: seatType.value,
+          startSeat: startSeat.value,
           tickCost: tickCost.value,
         })),
       )
@@ -297,8 +297,8 @@
   const changeType = (row) => {
     if (row.ticketType === 1) row.tickCost = 0
     else {
-      if (row.seatType === 0) row.tickCost = props.voyData[0]['vipVisa']
-      else if (row.seatType === 1) row.tickCost = props.voyData[0]['firVisa']
+      if (row.startSeat === 'VIP座') row.tickCost = props.voyData[0]['vipVisa']
+      else if (row.startSeat === '一等座') row.tickCost = props.voyData[0]['firVisa']
       else row.tickCost = props.voyData[0]['secVisa']
     }
   }
@@ -311,7 +311,6 @@
       url: 'base/traveller/listByCondition',
       params: condition,
     })
-
     resPage.value = { ...res.data.page }
     tableData.value = resPage.value.list
   }
@@ -366,7 +365,6 @@
       }
       traveller['startDate'] = props.voyData[0]['voyDate'] + ' ' + props.voyData[0]['startTime']
       traveller['startVoyNo'] = props.voyData[0]['voyNo']
-      traveller['startSeat'] = traveller['seatType'] === 0 ? 'VIP座' : traveller['seatType'] === 1 ? '一等座' : '二等座'
       traveller['state'] = '未检票'
       traveller['payType'] = '现金'
       traveller['isGuide'] = '否'

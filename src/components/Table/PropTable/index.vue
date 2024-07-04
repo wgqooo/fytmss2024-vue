@@ -181,16 +181,8 @@
       }
       .zb-table {
         position: absolute;
-        height: 100%;
       }
     }
-    // ::v-deep {
-    //   .el-table__header th {
-    //     font-size: 15px;
-    //     font-weight: 700;
-    //     color: #252525;
-    //   }
-    // }
     .pagination {
       width: 100%;
       display: flex;

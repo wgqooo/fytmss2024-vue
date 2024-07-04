@@ -26,11 +26,11 @@
           </el-button>
         </span>
         <svg-icon style="width: 80px; height: 30px; margin-right: 10px" icon-class="go"></svg-icon>
-        <VoyageInfo :handle-edit="handleEdit" :reset-edit="resetEdit" :disabled="true" :port="port" />
+        <VoyageInfo :voy-num="0" :handle-edit="handleEdit" :reset-edit="resetEdit" :disabled="true" :port="port" />
         <el-divider style="border-width: 30px; border-color: #f0f2f5"></el-divider>
         <span style="font-weight: bold; font-size: 1.5em; color: #409eff">返回航线</span>
         <svg-icon style="width: 80px; height: 30px; margin-right: 10px" icon-class="back"></svg-icon>
-        <VoyageInfo :handle-edit="handleEdit" :reset-edit="resetEdit" :disabled="true" :port="port == 0 ? 1 : 0" />
+        <VoyageInfo :voy-num="1" :handle-edit="handleEdit" :reset-edit="resetEdit" :disabled="true" :port="port == 0 ? 1 : 0" />
       </div>
       <ChooseTravellers v-if="active === 1" :voy-data="voyData" :order-data="orderData" :next-step="nextStep" />
       <OrderInfo v-if="active === 2" :order="order" />
@@ -70,21 +70,15 @@
       --active.value
     } else ElMessage.warning('已是初始状态')
   }
-  const handleEdit = (voy) => {
-    if (voy.startPort === 0) {
-      if (voyData.value[0] === voy) voyData.value[0] = undefined
-      else voyData.value[0] = voy
-    } else if (voy.startPort === 1) {
-      if (voyData.value[1] === voy) voyData.value[1] = undefined
-      else voyData.value[1] = voy
-    }
+  const handleEdit = (voy, voyNum) => {
+    if (voyData.value[voyNum] === voy) voyData.value[voyNum] = undefined
+    else voyData.value[voyNum] = voy
     if (voyData.value[0] != undefined && voyData.value[1] != undefined) {
       nextStep()
     }
   }
-  const resetEdit = (startPort) => {
-    if (startPort === 0) voyData.value[0] = undefined
-    else if (startPort === 1) voyData.value[1] = undefined
+  const resetEdit = (voyNum) => {
+    voyData.value[voyNum] = undefined
   }
 
   const orderData = (val) => {

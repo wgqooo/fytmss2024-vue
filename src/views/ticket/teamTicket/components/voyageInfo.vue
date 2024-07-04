@@ -148,6 +148,9 @@
         return false
       },
     },
+    voyNum: {
+      type: Number,
+    },
     port: {
       type: Number,
       default: () => {
@@ -195,7 +198,7 @@
       row['isSelected'] = false
     })
     //清除之前的选择
-    props.resetEdit(startPort.value)
+    props.resetEdit(props.voyNum)
   }
   const queryVoys = () => {
     getData()
@@ -208,7 +211,7 @@
         row.isSelected = false
       }
     })
-    props.handleEdit(selectedRow)
+    props.handleEdit(selectedRow, props.voyNum)
   }
 
   onMounted(() => {

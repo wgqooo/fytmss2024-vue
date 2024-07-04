@@ -107,6 +107,7 @@ export const columns = [
     name: 'operation',
     slot: true,
     fixed: 'right',
+    align: 'center',
     label: '操作',
     width: 300,
   },

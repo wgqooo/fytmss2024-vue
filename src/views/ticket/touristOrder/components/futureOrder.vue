@@ -52,13 +52,13 @@
 </template>
 <script lang="ts" setup>
   import { ref, reactive, onMounted, nextTick } from 'vue'
-  import { ElMessage, ElMessageBox } from 'element-plus'
+  import { ElMessage } from 'element-plus'
   import PropTable from '@/components/Table/PropTable/index.vue'
   import { Traveller } from '@/types/traveller'
   import service from '@/api/request'
   import { Page } from '@/types/page'
   import { columns } from './constants-future.jsx'
-  import { getCurrentDate, getCurrentTime, getNextDayDate } from '@/utils/dateFormat.js'
+  import { getCurrentDate, getCurrentTime } from '@/utils/dateFormat.js'
 
   const loading = ref(true)
   const appContainer = ref(null)
@@ -109,7 +109,7 @@
 
   const queryOrders = () => {
     if (dateScope.value[0] === getCurrentDate()) page.startDate = dateScope.value[0] + ' ' + getCurrentTime()
-    else page.startDate = dateScope.value[0]
+    else page.startDate = dateScope.value[0] + ' ' + '00:00:00'
     page.endDate = dateScope.value[1] + ' ' + '23:59:59'
     getData()
   }
