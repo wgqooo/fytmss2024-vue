@@ -152,7 +152,6 @@
   }
 
   const batchAdd = (table) => {
-    console.log(table)
     service({
       method: 'post',
       url: 'base/traveller/saveByBatch',

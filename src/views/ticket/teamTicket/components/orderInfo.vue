@@ -9,7 +9,7 @@
         </el-select>
       </div>
       <el-button type="primary" @click="exportExcelAction">
-        <el-icon :size="15" style="margin-right: 6px"><Download /></el-icon>导出散客订单(本页)
+        <el-icon :size="15" style="margin-right: 6px"><Download /></el-icon>导出团体订单(本页)
       </el-button>
     </div>
     <PropTable

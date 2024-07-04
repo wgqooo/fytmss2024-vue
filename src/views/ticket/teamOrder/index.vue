@@ -5,15 +5,15 @@
         <template #label>
           <span class="custom-tabs-label">
             <el-icon><calendar /></el-icon>
-            <span> 未出行订单</span>
+            <span style="font-size: 1.2em; font-weight: bold"> 未出行订单</span>
           </span>
         </template>
       </el-tab-pane>
-      <el-tab-pane name="history">
+      <el-tab-pane name="history" class="pane1">
         <template #label>
           <span class="custom-tabs-label">
             <el-icon><Memo /></el-icon>
-            <span> 历史订单</span>
+            <span style="font-size: 1.2em; font-weight: bold"> 历史订单</span>
           </span>
         </template>
       </el-tab-pane>
@@ -24,26 +24,21 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { onMounted, ref } from 'vue'
   import HistoryOrder from './components/historyOrder.vue'
   import FutureOrder from './components/futureOrder.vue'
 
-  const visible = ref(false)
+  const visible = ref()
   const handleClick = (tab) => {
     if (tab.props.name === 'future') visible.value = false
     else visible.value = true
   }
+
+  onMounted(() => {})
 </script>
 
 <style scoped lang="scss">
   @import './index';
-
-  .demo-tabs > .el-tabs__content {
-    padding: 32px;
-    color: #5bc0de;
-    font-size: 32px;
-    font-weight: 600;
-  }
 
   .demo-tabs .custom-tabs-label .el-icon {
     vertical-align: middle;

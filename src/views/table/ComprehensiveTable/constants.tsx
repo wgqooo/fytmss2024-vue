@@ -18,7 +18,6 @@ export const columns = [
     name: 'age',
     label: '年龄',
     align: 'right',
-
     span: 8,
   },
   {
