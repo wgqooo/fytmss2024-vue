@@ -27,6 +27,21 @@
         <el-form-item>
           <el-button type="primary" @click="delBatchVoyage">一键批量删除</el-button>
         </el-form-item>
+        <el-form-item style="margin-left: 50px">
+          <el-date-picker
+            v-model="dateScope"
+            type="daterange"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始"
+            end-placeholder="截止"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            :editable="false"
+            :clearable="false"
+          />
+          <el-button type="primary" style="margin-left: 50px" @click="queryVoysByDate">查询</el-button>
+        </el-form-item>
       </el-form>
     </div>
     <div class="footer">
@@ -36,10 +51,11 @@
         style="width: 100%"
         :border="true"
         show-overflow-tooltip
+        :row-key="getRowKey"
         :default-sort="{ prop: 'voyDate', order: 'ascending' }"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" align="center" width="50"></el-table-column>
+        <el-table-column type="selection" :reserve-selection="true" align="center" width="50"></el-table-column>
         <el-table-column prop="voyDate" label="日期" sortable width="150px" align="center">
           <template #default="scope">
             <template v-if="scope.row.edit">
@@ -193,12 +209,14 @@
 <script lang="ts" setup>
   import service from '@/api/request'
   import { onMounted, reactive } from 'vue'
-  import { computed, ref, watch } from 'vue'
+  import { ref } from 'vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import VoyageDialog from './components/voyageDialog.vue'
   import VopyVoysDialog from './components/copyVoysDialog.vue'
   import { Page } from '@/types/page'
+  import { getCurrentDate } from '@/utils/dateFormat.js'
 
+  const dateScope = ref([getCurrentDate(), getCurrentDate()])
   const tableData = ref<[]>([])
   const resPage = ref<Page>({
     size: 0,
@@ -214,7 +232,12 @@
   const page = reactive({
     index: 1,
     size: 10,
+    startDate: dateScope.value[0],
+    endDate: dateScope.value[1],
   })
+  const getRowKey = (row) => {
+    return row.voyDate + row.startTime
+  }
 
   //展示
   const getData = async () => {
@@ -226,6 +249,11 @@
     })
     resPage.value = { ...res.data.page }
     tableData.value = resPage.value.list
+  }
+  const queryVoysByDate = () => {
+    page.startDate = dateScope.value[0]
+    page.endDate = dateScope.value[1]
+    getData()
   }
 
   //编辑
