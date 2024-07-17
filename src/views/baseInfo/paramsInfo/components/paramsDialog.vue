@@ -1,30 +1,17 @@
 <template>
   <el-dialog v-model="dialogVisible" :title="title" width="50%" @close="close">
     <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="100px">
-      <el-form-item label="工商号" prop="legalNo">
-        <el-input v-model="ruleForm.legalNo" placeholder="请输入工商号" :disabled="disabledProp" />
+      <el-form-item label="参数类型" prop="dtype">
+        <el-input v-model="ruleForm.dtype" placeholder="请输入参数类型" :disabled="disabledProp" />
       </el-form-item>
-      <el-form-item label="旅行社名" prop="travelName">
-        <el-input v-model="ruleForm.travelName" placeholder="请输入旅行社名" />
+      <el-form-item label="参数编码" prop="dcode">
+        <el-input v-model="ruleForm.dcode" placeholder="请输入参数编码" :disabled="disabledProp" />
       </el-form-item>
-      <el-form-item label="法人姓名" prop="legalName">
-        <el-input v-model="ruleForm.legalName" placeholder="请输入法人姓名"></el-input>
+      <el-form-item label="参数说明" prop="cpara">
+        <el-input v-model="ruleForm.cpara" placeholder="请输入参数说明" />
       </el-form-item>
-      <el-form-item label="法人手机号" prop="legalPhone">
-        <el-input v-model="ruleForm.legalPhone" placeholder="请输入法人手机号"></el-input>
-      </el-form-item>
-      <el-form-item label="余额" prop="money">
-        <el-input v-model="ruleForm.money" placeholder="请输入余额"></el-input>
-      </el-form-item>
-      <el-form-item label="状态">
-        <el-switch
-          v-model="ruleForm.legalState"
-          inline-prompt
-          :active-value="'1'"
-          :inactive-value="'0'"
-          active-text="启用"
-          inactive-text="禁用"
-        ></el-switch>
+      <el-form-item label="参数值" prop="dvalue">
+        <el-input v-model="ruleForm.dvalue" placeholder="请输入参数值" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -48,64 +35,51 @@
 
   const ruleFormRef = ref<FormInstance>()
   const dialogVisible = ref<boolean>(false)
-  const title = ref('新增旅行社')
   const disabledProp = ref(false)
+  const title = ref('新增系统参数')
 
   const rules = reactive({
-    legalNo: [{ required: true, message: '请输入工商号', trigger: 'blur' }],
-    travelName: [{ required: true, message: '请输入旅行社名', trigger: 'blur' }],
-    legalName: [{ required: true, message: '请输入法人姓名', trigger: 'blur' }],
-    legalPhone: [{ required: true, pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }],
-    money: [
-      { required: true, message: '请输入余额', trigger: 'blur' },
-      {
-        pattern: /^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)|(0))$/,
-        message: '非法余额',
-        trigger: 'blur',
-      },
-    ],
+    dtype: [{ required: true, message: '请输入参数类型', trigger: 'blur' }],
+    dcode: [{ required: true, message: '请输入参数编码', trigger: 'blur' }],
+    cpara: [{ required: true, message: '请输入参数描述', trigger: 'blur' }],
+    dvalue: [{ required: true, message: '请输入参数值', trigger: 'blur' }],
   })
 
   const ruleForm = reactive({
-    legalNo: '',
-    travelName: '',
-    legalName: '',
-    legalPhone: '',
-    money: 0.0,
-    legalState: '',
+    dtype: '',
+    dcode: '',
+    cpara: '',
+    dvalue: '',
   })
 
   function close() {
     ruleFormRef.value.resetFields()
     Object.keys(ruleForm).forEach((key) => {
-      if (key === 'sex') ruleForm[key] = '男'
-      else if (key === 'status') ruleForm[key] = true
-      else ruleForm[key] = null
+      ruleForm[key] = null
     })
     disabledProp.value = false
   }
 
   const show = (item = {}) => {
-    //console.log("item",item)
-    title.value = '新增旅行社'
-    if (item['legalNo']) {
-      title.value = '编辑旅行社'
+    title.value = '新增系统参数'
+    if (item['dtype']) {
+      title.value = '编辑系统参数'
+      disabledProp.value = true
       Object.keys(item).forEach((key) => {
         ruleForm[key] = item[key]
       })
     }
-    disabledProp.value = true
     dialogVisible.value = true
   }
 
   const handleClose = (done: () => void) => {
     ruleFormRef.value.validate(async (valid, fields) => {
       if (valid) {
-        if (title.value == '新增旅行社') {
+        if (title.value == '新增系统参数') {
           console.log(JSON.stringify(ruleForm))
           await service({
             method: 'post',
-            url: 'base/travel/save',
+            url: 'base/syspara/save',
             data: JSON.stringify(ruleForm),
           }).then((response) => {
             if (response.data.code == 0) {
@@ -120,7 +94,7 @@
         } else {
           await service({
             method: 'post',
-            url: 'base/travel/update',
+            url: 'base/syspara/update',
             data: JSON.stringify(ruleForm),
           }).then((response) => {
             if (response.data.code == 0) {

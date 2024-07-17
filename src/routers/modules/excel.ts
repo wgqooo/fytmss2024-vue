@@ -7,7 +7,8 @@ const excelRouter = [
     redirect: '/excel/export-excel',
     name: 'excel',
     meta: {
-      title: 'Excel&Zip',
+      //title: 'Excel&Zip',
+      title: '出纳管理',
       icon: 'School',
     },
     children: [

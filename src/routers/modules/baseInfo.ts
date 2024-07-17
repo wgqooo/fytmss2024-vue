@@ -23,7 +23,7 @@ const baseInfoRouter = [
         path: '/base-info/shipInfo',
         component: () => import('@/views/baseInfo/shipInfo/index.vue'),
         name: 'shipInfo',
-        meta: { title: '船只管理', svg: 'boat' },
+        meta: { title: '船只信息', svg: 'boat' },
       },
       {
         path: '/base-info/travelInfo',
@@ -38,10 +38,10 @@ const baseInfoRouter = [
         meta: { title: '旅客信息', svg: 'traveller-info' },
       },
       {
-        path: '/base-info/dictionary',
-        component: () => import('@/views/baseInfo/dictionary/index.vue'),
-        name: 'dictionary',
-        meta: { title: '字典管理', icon: 'Reading' },
+        path: '/base-info/paramsInfo',
+        component: () => import('@/views/baseInfo/paramsInfo/index.vue'),
+        name: 'paramsInfo',
+        meta: { title: '字典管理', svg: 'dictionary' },
       },
     ],
   },

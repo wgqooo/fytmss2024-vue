@@ -121,7 +121,7 @@
   }
   const queryAllVoyNo = () => {
     service.get('voyage/voyageManage/listAllVoyNo').then((response) => {
-      //提取所有船名
+      //提取所有船号
       allVoyNo.value = response.data.voyNos
     })
   }

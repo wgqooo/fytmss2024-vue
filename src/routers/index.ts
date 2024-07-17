@@ -20,6 +20,7 @@ import baseInfoRouter from './modules/baseInfo'
 import voyageRouter from './modules/voyage'
 import ticketRouter from './modules/ticket'
 import baseQueryRouter from './modules/baseQuery'
+import financeRouter from './modules/finance'
 
 // 异步组件
 //这样做的好处是可以将路由配置拆分到不同的文件或模块中，使代码结构更清晰，并且便于维护和扩展
@@ -32,13 +33,14 @@ export const asyncRoutes = [
   ...voyageRouter,
   ...ticketRouter,
   ...baseQueryRouter,
+  ...financeRouter,
   ...dataScreenRouter,
   ...echartsRouter,
   ...tableRouter,
-  ...formRouter,
-  ...othersRouter,
-  ...functionPageRouter,
-  ...chatRouter,
+  // ...formRouter,
+  // ...othersRouter,
+  // ...functionPageRouter,
+  // ...chatRouter,
   ...nestedRouter,
   ...excelRouter,
   ...externalLink,

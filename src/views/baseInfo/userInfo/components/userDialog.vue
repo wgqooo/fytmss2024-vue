@@ -2,7 +2,7 @@
   <el-dialog v-model="dialogVisible" :title="title" width="50%" @close="close">
     <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="100px">
       <el-form-item label="员工编号" prop="empNo">
-        <el-input v-model="ruleForm.empNo" placeholder="请输入员工编号" />
+        <el-input v-model="ruleForm.empNo" placeholder="请输入员工编号" :disabled="disabledProp" />
       </el-form-item>
       <el-form-item label="员工姓名" prop="empName">
         <el-input v-model="ruleForm.empName" placeholder="请输入员工姓名" />
@@ -49,7 +49,7 @@
 </template>
 <script lang="ts" setup>
   import service from '@/api/request'
-  import { ElMessageBox, ElMessage, FormInstance } from 'element-plus'
+  import { ElMessage, FormInstance } from 'element-plus'
   import { reactive, ref } from 'vue'
   import region from '@/utils/ChinaCityJSON'
   const handleRegionChange = (val: []) => {
@@ -66,6 +66,7 @@
   const ruleFormRef = ref<FormInstance>()
   const dialogVisible = ref<boolean>(false)
   const roleNames = ref<string[]>()
+  const disabledProp = ref(false)
   const title = ref('新增用户')
 
   const rules = reactive({
@@ -99,6 +100,7 @@
       else if (key === 'status') ruleForm[key] = true
       else ruleForm[key] = null
     })
+    disabledProp.value = false
   }
 
   const queryAllRoles = () => {
@@ -111,8 +113,9 @@
   const show = (item = {}) => {
     //console.log("item",item)
     title.value = '新增用户'
-    if (item.empNo) {
+    if (item['empNo']) {
       title.value = '编辑用户'
+      disabledProp.value = true
       Object.keys(item).forEach((key) => {
         ruleForm[key] = item[key]
       })

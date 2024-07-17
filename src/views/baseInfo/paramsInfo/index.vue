@@ -1,11 +1,11 @@
 <template>
   <div class="app-container m-user">
-    <ShipTable />
+    <ParamsTable />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import ShipTable from './components/shipTable.vue'
+  import ParamsTable from './components/paramsTable.vue'
 </script>
 
 <style scoped lang="scss">

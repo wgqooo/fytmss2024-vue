@@ -7,7 +7,8 @@ const externalLink = [
     redirect: '/external-link/wechat',
     name: 'external-link',
     meta: {
-      title: '外部链接',
+      //title: '外部链接',
+      title: '系统管理',
       icon: 'link',
     },
     children: [
