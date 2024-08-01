@@ -1,103 +1,62 @@
 <template>
   <el-card class="m-dept-side">
-    <div class="title">字典管理</div>
-
-    <el-button type="primary" @click="addDictsort">
-      <el-icon color="#fff"><Plus /></el-icon><span style="margin-left: 8px">添加字典分类</span>
-    </el-button>
-
+    <div class="title">参数分类</div>
     <el-input v-model="filterText" placeholder="输入关键字进行过滤" class="filter-search" />
-
     <div class="filter-tree">
       <el-scrollbar class="scrollbar">
-        <el-tree ref="treeRef" :data="tableData" :props="defaultProps" default-expand-all :filter-node-method="filterNode">
-          <template #default="{ node, data }">
-            <span class="custom-tree-node" @click="selectAction(node, data)">
-              <span>{{ node.label }}</span>
-              <span v-if="data.id != null">
-                <el-button type="primary" link @click.stop="editDictsort(data)">编辑</el-button>
-                <el-button style="margin-left: 6px" type="danger" link @click.stop="remove(node, data)">删除</el-button>
-              </span>
-            </span>
-          </template>
-        </el-tree>
+        <p v-for="type in filteredTypes" :key="type" class="scrollbar-item">
+          {{ type }}
+        </p>
       </el-scrollbar>
     </div>
-    <DictsortDialog ref="dictsortDialog" />
   </el-card>
 </template>
 
 <script lang="ts" setup>
-  import { onBeforeMount, ref, watch } from 'vue'
-  import { ElMessageBox, ElTree } from 'element-plus'
-  import DictsortDialog from './dictsortDialog.vue'
-  import { dictionaryData } from '@/mock/system'
+  import { computed, onBeforeMount, onUnmounted, ref } from 'vue'
+  import service from '@/api/request'
+  import emitter from '@/utils/emitter'
 
-  const emit = defineEmits(['change'])
+  const types = ref([])
+  const filterText = ref('')
+  const filteredTypes = computed(() => {
+    emitter.emit('filterData', filterText.value)
+    return types.value.filter((type) => {
+      return type.includes(filterText.value)
+    })
+  })
 
-  const tableData = ref<Tree[]>(dictionaryData)
-  const dictsortDialog = ref(null)
-  interface Tree {
-    id: string
-    name: string
-    createTime?: string
-    remark?: string
-    children?: Tree[]
+  const getTypes = async () => {
+    let res = await service({
+      method: 'get',
+      url: 'sys/syspara/sort',
+    })
+    types.value = res.data.types
   }
 
   onBeforeMount(() => {
-    let allObj = { id: null, name: '全部' }
-    tableData.value = [allObj, ...dictionaryData]
-  })
-
-  const filterText = ref('')
-  const treeRef = ref<InstanceType<typeof ElTree>>()
-
-  const defaultProps = {
-    children: 'children',
-    label: 'name',
-    value: 'id',
-  }
-
-  // 监听输入
-  watch(filterText, (val) => {
-    treeRef.value!.filter(val)
-  })
-
-  // 搜索
-  const filterNode = (value: string, data: Tree) => {
-    console.log(data)
-    if (!value) return true
-    return data.name.includes(value)
-  }
-
-  const addDictsort = () => {
-    dictsortDialog.value.show()
-  }
-
-  const editDictsort = (item) => {
-    dictsortDialog.value.show(item)
-  }
-
-  const selectAction = (node, data) => {
-    emit('change', data)
-    console.log('node, data============', node, data)
-  }
-
-  const remove = (node, data) => {
-    ElMessageBox.confirm('你确定要删除当前项吗?', '温馨提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-      draggable: true,
+    emitter.on('updateTypes', () => {
+      getTypes()
     })
-      .then(() => {})
-      .catch(() => {})
-
-    console.log('data===', node, data)
-  }
+    getTypes()
+  })
+  onUnmounted(() => {
+    // 解绑事件
+    emitter.off('updateTypes')
+  })
 </script>
 
 <style lang="scss" scoped>
+  .scrollbar-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    margin: 10px;
+    text-align: center;
+    border-radius: 4px;
+    background: var(--el-color-primary-light-9);
+    color: var(--el-color-primary);
+  }
   @import '../index.scss';
 </style>

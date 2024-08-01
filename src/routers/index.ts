@@ -29,6 +29,7 @@ const arr2 = [4, 5, 6];
 const combinedArray = [...arr1, ...arr2];
 console.log(combinedArray); // 输出结果为 [1, 2, 3, 4, 5, 6]*/
 export const asyncRoutes = [
+  ...systemRouter,
   ...baseInfoRouter,
   ...voyageRouter,
   ...ticketRouter,
@@ -44,7 +45,6 @@ export const asyncRoutes = [
   ...nestedRouter,
   ...excelRouter,
   ...externalLink,
-  ...systemRouter,
 ]
 
 /**

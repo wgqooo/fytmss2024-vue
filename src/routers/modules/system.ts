@@ -6,7 +6,7 @@ const systemRouter = [
   {
     path: '/system',
     component: Layout,
-    redirect: '/system/user',
+    redirect: '/system/role',
     name: 'system',
     meta: {
       title: '系统管理',
@@ -14,22 +14,22 @@ const systemRouter = [
     },
     children: [
       {
-        path: '/system/user',
-        component: () => import('@/views/system/user/index.vue'),
-        name: 'user',
-        meta: { title: '用户管理', icon: 'MenuIcon' },
-      },
-      {
-        path: '/system/dept',
-        component: () => import('@/views/system/dept/index.vue'),
-        name: 'dept',
-        meta: { title: '部门管理', icon: 'MenuIcon' },
-      },
-      {
         path: '/system/role',
         component: () => import('@/views/system/role/index.vue'),
         name: 'role',
-        meta: { title: '角色管理', icon: 'MenuIcon' },
+        meta: { title: '权限管理', svg: 'authority' },
+      },
+      {
+        path: '/system/dictionary',
+        component: () => import('@/views/system/dictionary/index.vue'),
+        name: 'dictionary',
+        meta: { title: '系统参数', svg: 'sys-params' },
+      },
+      {
+        path: '/system/inform',
+        component: () => import('@/views/system/inform/index.vue'),
+        name: 'inform',
+        meta: { title: '通知管理', icon: 'MenuIcon' },
       },
       {
         path: '/system/menu',
@@ -38,10 +38,10 @@ const systemRouter = [
         meta: { title: '菜单管理', icon: 'MenuIcon' },
       },
       {
-        path: '/system/dictionary',
-        component: () => import('@/views/system/dictionary/index.vue'),
-        name: 'dictionary',
-        meta: { title: '字典管理', icon: 'MenuIcon' },
+        path: '/system/password',
+        component: () => import('@/views/system/password/index.vue'),
+        name: 'menu',
+        meta: { title: '密码管理', icon: 'MenuIcon' },
       },
     ],
   },

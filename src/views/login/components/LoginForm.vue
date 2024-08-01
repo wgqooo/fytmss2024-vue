@@ -1,7 +1,7 @@
 <template>
   <div class="login-title">
-    <img class="icon" src="@/assets/image/logo.png" alt="logo" />
-    <h2 class="title">Vue-Admin-Perfect</h2>
+    <img class="icon" src="@/assets/image/building.png" alt="logo" />
+    <h2 class="title">抚远港务售票局</h2>
   </div>
   <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules">
     <el-form-item label="" prop="username">
@@ -93,7 +93,7 @@
             })
             ElNotification({
               title: getTimeStateStr(),
-              message: '欢迎登录 Vue Admin Perfect',
+              message: '欢迎登录 抚远售票系统',
               type: 'success',
               duration: 3000,
             })

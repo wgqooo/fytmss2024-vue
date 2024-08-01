@@ -4,44 +4,38 @@ import Layout from '@/layout/index.vue'
 
 const baseInfoRouter = [
   {
-    path: '/base-info',
+    path: '/baseInfo',
     component: Layout,
-    redirect: '/base-info/userInfo',
-    name: 'base-info',
+    redirect: '/baseInfo/userInfo',
+    name: 'baseInfo',
     meta: {
       title: '基本信息',
       icon: 'Document',
     },
     children: [
       {
-        path: '/base-info/userInfo',
+        path: '/baseInfo/userInfo',
         component: () => import('@/views/baseInfo/userInfo/index.vue'),
         name: 'userInfo',
         meta: { title: '员工信息', svg: 'user-info' },
       },
       {
-        path: '/base-info/shipInfo',
+        path: '/baseInfo/shipInfo',
         component: () => import('@/views/baseInfo/shipInfo/index.vue'),
         name: 'shipInfo',
         meta: { title: '船只信息', svg: 'boat' },
       },
       {
-        path: '/base-info/travelInfo',
+        path: '/baseInfo/travelInfo',
         component: () => import('@/views/baseInfo/travelInfo/index.vue'),
         name: 'travelInfo',
         meta: { title: '旅行社信息', svg: 'travel-info' },
       },
       {
-        path: '/base-info/travellerInfo',
+        path: '/baseInfo/travellerInfo',
         component: () => import('@/views/baseInfo/travellerInfo/index.vue'),
         name: 'travellerInfo',
         meta: { title: '旅客信息', svg: 'traveller-info' },
-      },
-      {
-        path: '/base-info/paramsInfo',
-        component: () => import('@/views/baseInfo/paramsInfo/index.vue'),
-        name: 'paramsInfo',
-        meta: { title: '字典管理', svg: 'dictionary' },
       },
     ],
   },

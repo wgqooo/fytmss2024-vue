@@ -36,7 +36,7 @@
   const ruleFormRef = ref<FormInstance>()
   const dialogVisible = ref<boolean>(false)
   const title = ref('新增字典项')
-  import { dictionaryData } from '@/mock/system'
+  const dictionaryData = ref([])
 
   const cascaderProps = {
     value: 'id',

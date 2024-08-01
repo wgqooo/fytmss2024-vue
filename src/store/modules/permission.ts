@@ -26,21 +26,18 @@ export const usePermissionStore = defineStore({
   actions: {
     // 生成路由
     generateRoutes(roles) {
-      return new Promise((resolve) => {
+      return new Promise(async (resolve) => {
         // 在这判断是否有权限，哪些角色拥有哪些权限
         let accessedRoutes
-        if (roles && roles.length && !roles.includes('admin')) {
-          accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-        } else {
-          accessedRoutes = asyncRoutes || []
-        }
+        accessedRoutes = await filterAsyncRoutes(asyncRoutes, roles)
+        //accessedRoutes = asyncRoutes
         accessedRoutes = accessedRoutes.concat(notFoundRouter)
         this.routes = constantRoutes.concat(accessedRoutes)
         this.addRoutes = accessedRoutes
         resolve(accessedRoutes)
       })
     },
-    // 清楚路由
+    // 清除路由
     clearRoutes() {
       this.routes = []
       this.addRoutes = []
