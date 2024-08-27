@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts" setup>
-  import ParamsTable from './components/ParamsTable.vue'
+  import ParamsTable from './components/paramsTable.vue'
   import Side from './components/Side.vue'
 </script>
 

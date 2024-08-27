@@ -1,4 +1,9 @@
 <template>
+  <!--
+  name="fade-slide"：指定过渡动画的名称，这里是 fade-slide
+  mode="out-in"：指定过渡模式，表示新元素先进入，旧元素再离开
+  appear：表示初次渲染时也会应用过渡效果
+  -->
   <div class="app-main">
     <router-view v-slot="{ Component, route }">
       <transition name="fade-slide" mode="out-in" appear>

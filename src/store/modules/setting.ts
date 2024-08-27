@@ -32,7 +32,7 @@ export const useSettingStore = defineStore({
       // element组件大小
       globalComSize: 'default',
       // 是否只保持一个子菜单的展开
-      uniqueOpened: false,
+      uniqueOpened: true,
       // 固定header
       fixedHeader: true,
       // 灰色模式

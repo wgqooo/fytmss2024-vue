@@ -1,0 +1,31 @@
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%; /* 可以根据需要设置合适的高度 */
+  background-size: cover;
+  background-image: url('@/assets/image/pwd-bg.jpg');
+  .card-box {
+    border: 1px solid transparent;
+    border-radius: 15px;
+    width: 25%;
+    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 5px 5px 0 0 rgba(0, 0, 0, 0.2);
+    .card-btn {
+      color: #fff;
+      font-weight: bold;
+      background-color: rgba(255, 255, 255, 0.1);
+      margin-left: 38%;
+      width: 30%;
+    }
+    .card-btn:hover {
+      background-color: #fe83c6;
+      border-color: #fe83c6;
+    }
+    .card-btn:focus {
+      background-color: #fe83c6;
+      border-color: #fe83c6;
+    }
+  }
+}

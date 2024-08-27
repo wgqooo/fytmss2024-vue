@@ -1,4 +1,5 @@
 import service from '@/api/request'
+import path from 'path-browserify'
 /**
  * 通过递归过滤异步路由表
  * @param routes asyncRoutes
@@ -14,7 +15,7 @@ export async function filterAsyncRoutes(routes, roles) {
         method: 'get',
         url: 'sys/auth/roles',
         params: {
-          path: tmp.path,
+          menuId: tmp.menuId,
         },
       })
       tmp.meta.roleArr = response.data.roles
@@ -43,7 +44,6 @@ export async function filterAsyncRoutes(routes, roles) {
  * @param route
  */
 export function hasPermission(roles, route) {
-  //return true
   if (route.meta && route.meta.roleArr) {
     return roles.some((role) => route.meta.roleArr.includes(role))
   } else {
@@ -52,7 +52,10 @@ export function hasPermission(roles, route) {
 }
 
 /**
- * @description 使用递归，过滤需要缓存的路由
+ * 当用户从一个页面切换到另一个页面时，如果某些页面被缓存，
+ * 那么这些页面的状态（比如滚动位置、表单输入数据）可以得以保留。
+ * 这样可以避免用户每次返回页面时都需要重新加载和填写数据，提升用户体验
+ * @description 使用递归，过滤需要缓存的路由，好处是：页面状态保持，减少服务器负载，加快页面切换速度，自定义缓存策略
  * @param {Array} _route 所有路由表
  * @param {Array} _cache 缓存的路由表
  * @return void
@@ -61,6 +64,7 @@ export function filterKeepAlive(routers) {
   const cacheRouter: any[] = []
   const deep = (routers) => {
     routers.forEach((item) => {
+      // 如果当前路由项具有 meta 属性并且 meta.keepAlive 是真值，并且具有 name 属性
       if (item.meta?.keepAlive && item.name) {
         cacheRouter.push(item.name)
       }

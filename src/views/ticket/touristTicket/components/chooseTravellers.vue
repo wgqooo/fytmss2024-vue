@@ -92,7 +92,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" :icon="Search" @click="queryTravellers">查询</el-button>
-        <el-button type="warning" :icon="Refresh" @click="reset(ruleFormRef)">重置</el-button>
+        <el-button type="warning" :icon="Refresh" @click="reset">重置</el-button>
       </el-form-item>
     </el-form>
     <span style="font-weight: bold; font-size: 1.5em; margin-bottom: 10px">选择旅客</span>
@@ -203,6 +203,13 @@
       </div>
     </div>
   </div>
+  <el-dialog v-model="waitVisible" title="订单生成中" width="18%">
+    <span style="display: inline-block">
+      <img src="../../../../assets/image/gif/pay.gif" width="200px" />
+      <!-- <h1 style="display: inline-block">数据正在排产中</h1>-->
+      <h1 style="display: inline-block">请稍等...</h1>
+    </span>
+  </el-dialog>
   <OrderDialog
     ref="orderDialog"
     :choose-travellers="chooseTravellers"
@@ -240,7 +247,9 @@
     trName: '',
     startDate: props.voyData[0]['voyDate'] + ' ' + props.voyData[0]['startTime'],
   })
+
   const loading = ref(true)
+  const waitVisible = ref(false)
   const tableData = ref<Traveller[]>([])
   const resPage = ref<Page>({
     size: 0,
@@ -354,7 +363,7 @@
     let username = userCache['userInfo'].name
     chooseTravellers.value.forEach((traveller) => {
       traveller['tickNo'] = dateStr + count++ + traveller['passportNo'].slice(-3)
-      if (userCache.roles[0] === 'admin') {
+      if (userCache.roles.includes('超管')) {
         traveller['legalNo'] = '000000'
         traveller['teamNo'] = '00000' + dateStr
         traveller['tickOrigin'] = 0
@@ -374,16 +383,22 @@
       traveller['orderName'] = username
       traveller['identity'] = '旅客'
     })
+    waitVisible.value = true
     service({
       method: 'post',
       url: 'ticket/touristBook/addTickets',
       data: JSON.stringify(chooseTravellers.value),
     }).then((response) => {
-      if (response.data.code === 0) {
-        ElMessage.success(response.data.msg)
-        props.orderData(chooseTravellers.value)
-        props.nextStep()
-      }
+      setTimeout(() => {
+        waitVisible.value = false
+        if (response.data.code === 0) {
+          ElMessage.success(response.data.msg)
+          props.orderData(chooseTravellers.value)
+          props.nextStep()
+        } else if (response.data.code === 500) {
+          ElMessage.error(response.data.msg)
+        }
+      }, 1500)
     })
   }
 

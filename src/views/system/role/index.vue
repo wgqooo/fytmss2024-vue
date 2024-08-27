@@ -31,33 +31,41 @@
               <el-tag size="large" type="warning" effect="plain">{{ scope.row.roleEname }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="240" align="center">
+          <el-table-column label="操作" width="500" align="center">
             <template #default="scope">
-              <el-button type="success" size="small" icon="Edit" @click="edit(scope.row)"> 更改权限 </el-button>
-              <el-button type="danger" size="small" icon="Delete" @click="del(scope.row)"> 删除角色 </el-button>
+              <el-button style="margin-right: 20px" type="success" size="small" icon="EditPen" @click="editAuth(scope.row)">
+                更改权限
+              </el-button>
+              <el-button style="margin-right: 20px" type="warning" size="small" icon="Edit" @click="editRole(scope.row)">
+                编辑角色
+              </el-button>
+              <el-button type="danger" size="small" icon="Delete" @click="delRole(scope.row)"> 删除角色 </el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
-    <RoleDrawer ref="roleDrawer" :get-data="getData" />
+    <RoleDrawer ref="roleDrawer" :get-data="getData" :clear-tree-status="clearTreeStatus" />
+    <RoleDialog ref="roleDialog" :get-data="getData"></RoleDialog>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ElMessageBox, FormInstance } from 'element-plus'
+  import { ElMessage, ElMessageBox, FormInstance } from 'element-plus'
   import { onMounted, reactive, ref } from 'vue'
   import { Search } from '@element-plus/icons-vue'
   import RoleDrawer from './components/roleDrawer.vue'
+  import RoleDialog from './components/roleDialog.vue'
   import service from '@/api/request'
+  import { asyncRoutes } from '@/routers'
 
   const tableData = ref()
   const loading = ref(true)
   const roleDrawer = ref()
+  const roleDialog = ref()
   const formSize = ref('default')
   const ruleFormRef = ref<FormInstance>()
   const formInline = reactive({})
-
   const getData = async () => {
     //获取表格数据
     const res = await service({
@@ -82,22 +90,72 @@
     }, 500)
   }
   const addRole = () => {
-    roleDrawer.value.show()
+    roleDialog.value.show()
+  }
+  const editRole = (row) => {
+    roleDialog.value.show(row)
   }
 
-  const edit = (row) => {
+  //menuIds控制子节点勾选
+  let menuIds = ref([])
+  //parentIds控制菜单的展开（勾选中的才展开，虽然功能有些鸡肋，但是很细节）
+  let parentIds = ref([])
+  const editAuth = async (row) => {
     roleDrawer.value.show(row)
+    await judgeAuth(asyncRoutes, row['roleCname'])
+    roleDrawer.value.settingTreeOpt(parentIds.value, menuIds.value)
+  }
+  const judgeAuth = async (routes, role) => {
+    for (const route of routes) {
+      const res = await service({
+        method: 'get',
+        url: 'sys/auth/roles',
+        params: {
+          menuId: route.menuId,
+        },
+      })
+      route.meta.roleArr = res.data.roles
+      if (hasAuth(role, route, res.data.roles)) {
+        if (route.children) {
+          await judgeAuth(route.children, role)
+          parentIds.value.push(route.menuId)
+        } else {
+          //保持父亲节点的复选框半选状态
+          menuIds.value.push(route.menuId)
+        }
+      }
+    }
+  }
+  function hasAuth(role, route, roleArr) {
+    if (route.meta && route.meta.roleArr) {
+      return roleArr.includes(role)
+    } else return false
   }
 
-  const del = (row) => {
-    ElMessageBox.confirm('你确定要删除当前项吗?', '温馨提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-      draggable: true,
+  const clearTreeStatus = (tree) => {
+    parentIds.value.forEach((id) => {
+      tree.getNode(id).expanded = false
     })
-      .then(() => {})
-      .catch(() => {})
+    ;(menuIds.value = []), (parentIds.value = [])
+  }
+
+  const delRole = (row) => {
+    ElMessageBox.confirm(
+      `确认删除 <span style="color: red; font-size: 18px; font-weight: bold">${row.roleCname}</span> 角色吗？`,
+      '考虑一下',
+      { confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning', dangerouslyUseHTMLString: true },
+    ).then(() => {
+      service({
+        method: 'delete',
+        url: 'base/role/delete',
+        params: {
+          roleId: row.roleId,
+        },
+      }).then((res) => {
+        if (res.data.code === 0) ElMessage.success(res.data.msg)
+        getData()
+      })
+    })
   }
 
   onMounted(() => {

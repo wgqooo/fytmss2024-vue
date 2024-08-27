@@ -6,15 +6,16 @@
           v-for="item in visitedViews"
           :key="item.path"
           :path="item.path"
-          :label="item.title"
+          :label="item.meta.title"
           :name="item.path"
           :closable="!(item.meta && item.meta.affix)"
         >
           <template #label>
-            <el-icon v-if="item.icon" class="tabs-icon">
-              <component :is="item.icon"></component>
-            </el-icon>
-            {{ item.title }}
+            <!-- <el-icon v-if="item.meta?.icon" class="tabs-icon">
+              <component :is="item.meta.icon"></component>
+            </el-icon> -->
+            <svg-icon v-if="item.meta.svg" :icon-class="item.meta.svg"> </svg-icon>
+            {{ item.meta.title }}
           </template>
         </el-tab-pane>
       </el-tabs>

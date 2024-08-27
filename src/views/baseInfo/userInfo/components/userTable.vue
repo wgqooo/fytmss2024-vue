@@ -3,7 +3,7 @@
     <div class="header">
       <el-form ref="ruleFormRef" :inline="true" :model="formInline">
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="formInline.username" placeholder="请输入用户名" />
+          <el-input v-model="formInline['username']" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="onSubmit">查询</el-button>

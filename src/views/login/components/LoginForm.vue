@@ -88,6 +88,7 @@
             ruleForm.name = response.data.name
             //存储用户信息和token
             UserStore.login(ruleForm)
+            sessionStorage.setItem('sessionId', response.data.sessionId)
             router.push({
               path: '/',
             })

@@ -1,78 +1,84 @@
-.personal {
-  .name {
-    margin-top: 15px;
-    font-size: 24px;
-    font-weight: 500;
-    color: rgb(38, 38, 38);
-  }
-  .description {
-    margin-top: 8px;
-  }
-  .list {
-    margin-top: 18px;
-    line-height: 30px;
-    text-align: left;
-  }
-}
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.text {
-  font-size: 14px;
-}
-.grid-content {
-  display: flex;
-  .left {
-    width: 40%;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #2d8cf0;
-  }
-  .right {
-    display: flex;
-    flex-direction: column;
-    padding-left: 20px;
-    justify-content: center;
-    .h2 {
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-  }
-}
-.custom {
-  :deep(.el-card__body) {
-    padding: 0;
-  }
-}
-.item {
-  margin-bottom: 18px;
-}
-
-.box-card {
-  //height: 100%;
-  position: relative;
-  margin-bottom: 10px;
-  width: 100%;
-  .wechat {
-    position: absolute;
-    width: 150px;
-    right: 0;
-    top: 0;
-  }
-}
 .card-item {
   background: linear-gradient(50deg, #1890ff, #77e19d);
 }
+
 .home-container {
   width: 100%;
   height: 100%;
   display: flex;
   padding: 16px;
+  flex-wrap: wrap;
   box-sizing: border-box;
-  font-size: 14px;
+  justify-content: space-between;
+
+  .grid-row {
+    display: flex;
+    justify-content: space-between;
+    //
+    width: 100%;
+    margin-bottom: 10px;
+    .el-card {
+      width: 32%;
+      height: 150px;
+      margin-bottom: 0;
+      .grid-content {
+        display: flex;
+        .left {
+          width: 80%;
+          height: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #2d8cf0;
+        }
+        .right {
+          display: flex;
+          flex-direction: column;
+          padding-left: 20px;
+          justify-content: center;
+          .h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  .full-width-card {
+    width: 100%;
+    height: 700px;
+    margin-bottom: 10px;
+    .personal {
+      .online-status {
+        display: flex;
+        align-items: center; /* 垂直居中对齐 */
+        h1 {
+          margin-left: 10px; /* 设置头像和文字之间的间距 */
+          font-size: 20px; /* 可根据需要调整字体大小 */
+          .online-number {
+            color: red;
+          }
+        }
+      }
+      .online-btn {
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .half-width-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+    .el-card {
+      flex: 1;
+      margin-right: 20px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
 }

@@ -54,6 +54,7 @@ export const useUserStore = defineStore({
     },
     // 退出
     logout() {
+      sessionStorage.removeItem('sessionId')
       return new Promise((resolve, reject) => {
         this.token = null
         this.userInfo = {}

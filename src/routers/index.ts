@@ -35,16 +35,16 @@ export const asyncRoutes = [
   ...ticketRouter,
   ...baseQueryRouter,
   ...financeRouter,
-  ...dataScreenRouter,
-  ...echartsRouter,
-  ...tableRouter,
+  //...dataScreenRouter,
+  //...echartsRouter,
+  //...tableRouter,
   // ...formRouter,
   // ...othersRouter,
   // ...functionPageRouter,
   // ...chatRouter,
-  ...nestedRouter,
-  ...excelRouter,
-  ...externalLink,
+  //...nestedRouter,
+  //...excelRouter,
+  //...externalLink,
 ]
 
 /**

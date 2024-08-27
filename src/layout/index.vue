@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, watch } from 'vue'
+  import { computed, onBeforeMount, onUnmounted, watch, ref } from 'vue'
   import Theme from '@/components/Theme/index.vue'
   import Mobile from './components/Mobile/index.vue'
   import { useSettingStore } from '@/store/modules/setting'
@@ -16,6 +16,8 @@
   import LayoutVertical from './LayoutVertical/index.vue'
   import LayoutHorizontal from './LayoutHorizontal/index.vue'
   import LayoutColumns from './LayoutColumns/index.vue'
+  import { useRouter } from 'vue-router'
+  import { useUserStore } from '@/store/modules/user'
 
   const SettingStore = useSettingStore()
   const themeConfig = computed(() => SettingStore.themeConfig)

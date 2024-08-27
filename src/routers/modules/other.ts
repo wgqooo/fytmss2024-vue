@@ -11,31 +11,32 @@ const othersRouter = [
     meta: {
       title: '常用组件',
       icon: 'management',
+      roles: ['超管'],
     },
     children: [
       {
         path: '/other/clipboard',
         component: () => import('@/views/other/clipboard/index.vue'),
         name: 'clipboard',
-        meta: { title: '剪贴板', roles: ['other'], icon: 'MenuIcon' },
+        meta: { title: '剪贴板', roles: ['超管'], icon: 'MenuIcon' },
       },
       {
         path: '/other/editor',
         component: () => import('@/views/other/editor/index.vue'),
         name: 'editor',
-        meta: { title: '富文本编辑器', roles: ['other'], icon: 'MenuIcon' },
+        meta: { title: '富文本编辑器', roles: ['超管'], icon: 'MenuIcon' },
       },
       {
         path: '/other/code-mirror',
         component: () => import('@/views/other/codeMirror/index.vue'),
         name: 'code-mirror',
-        meta: { title: '代码编辑器', roles: ['other'], icon: 'MenuIcon' },
+        meta: { title: '代码编辑器', roles: ['超管'], icon: 'MenuIcon' },
       },
       {
         path: '/other/mark-down',
         component: () => import('@/views/other/markDown/index.vue'),
         name: 'mark-down',
-        meta: { title: 'markDown', roles: ['other'], icon: 'MenuIcon' },
+        meta: { title: 'markDown', roles: ['超管'], icon: 'MenuIcon' },
       },
       {
         path: '/other/print',

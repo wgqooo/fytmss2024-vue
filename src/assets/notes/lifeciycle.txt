@@ -1,0 +1,4 @@
+父组件：父组件的 setup 函数 -> beforeCreate -> created -> beforeMount -> 子组件beforeCreate -> 子组件created -> beforeMount -> 子组件mounted -> 父组件mounted
+当父组件发生更新时，子组件的生命周期执行顺序为：beforeUpdate -> 子组件beforeUpdate -> 子组件updated -> updated
+当子组件发生更新时，子组件的生命周期执行顺序为：beforeUpdate -> updated
+当父组件销毁时，子组件的生命周期执行顺序为：beforeUnmount -> 子组件beforeUnmount -> 子组件unmounted -> unmounted
