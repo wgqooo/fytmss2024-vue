@@ -19,7 +19,7 @@
       </el-form-item>
       <el-form-item label="计划船" prop="shipNo">
         <el-select v-model="ruleForm.shipNo" filterable allow-create clearable placeholder="请选择或输入计划船" @click="queryAllShipNames">
-          <el-option v-for="ship in ships" :label="ship.shipName" :value="ship.shipNo"></el-option>
+          <el-option v-for="ship in ships" :label="ship['shipName']" :value="ship['shipNo']"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="出发时间" prop="startTime">
@@ -51,7 +51,7 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleClose(ruleFormRef)">确定</el-button>
+        <el-button type="primary" @click="handleClose">确定</el-button>
       </span>
     </template>
   </el-dialog>
@@ -121,7 +121,7 @@
   }
   const queryAllVoyNo = () => {
     service.get('voyage/voyageManage/listAllVoyNo').then((response) => {
-      //提取所有船名
+      //提取所有船号
       allVoyNo.value = response.data.voyNos
     })
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="zb-pro-table">
-    <div v-if="showSearch" class="header">
+    <div v-if="props.showSearch" class="header">
       <SearchForm :columns="baseFormColumns" @submit="onSubmit" />
     </div>
 
@@ -16,11 +16,11 @@
         <el-table
           v-loading="loading"
           class="zb-table"
-          :data="data"
+          :data="props.data"
           :border="true"
           @selection-change="(val) => emit('selection-change', val)"
         >
-          <template v-for="(item, index) in columns">
+          <template v-for="(item, index) in props.columns">
             <el-table-column v-if="item.slot" v-bind="{ ...item, ...{ prop: item.name } }">
               <template #default="scope">
                 <slot :name="item.name" :item="item" :row="scope.row"></slot>
@@ -31,10 +31,11 @@
                 {{ getIndex($index) }}
               </template>
             </el-table-column>
+            <el-table-column v-else-if="item.selection" v-bind="{ ...item, ...{ prop: item.name } }"> </el-table-column>
             <el-table-column v-else v-bind="{ ...item, ...{ prop: item.name } }">
-              <!-- <template #default="scope">
-                {{ item.name ? scope.row[item.name] : item.value }}
-              </template> -->
+              <template #default="{ row }">
+                <span :style="{ color: item.color }">{{ row[item.name] }}</span>
+              </template>
             </el-table-column>
           </template>
         </el-table>
@@ -42,11 +43,11 @@
       <!-- ------------分页--------------->
       <div class="pagination">
         <el-pagination
-          :current-page="resPage.pageNum"
-          :page-size="resPage.pageSize"
+          :current-page="props.resPage.pageNum"
+          :page-size="props.resPage.pageSize"
           background="true"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="resPage.total"
+          :total="props.resPage.total"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
@@ -57,24 +58,32 @@
 <script lang="ts" setup>
   import { computed, ref, reactive } from 'vue'
   import SearchForm from '@/components/SearchForm/index.vue'
-  import { ElMessage, ElMessageBox } from 'element-plus'
   import type { FormInstance } from 'element-plus'
   const emit = defineEmits(['reset', 'onSubmit', 'selection-change'])
   let props = defineProps({
     showSearch: {
       default: true,
     },
+    pagination: {
+      default: true,
+    },
     columns: {
       type: Array,
-      default: () => [],
+      default: () => {
+        return []
+      },
     },
     data: {
       type: Array,
-      default: () => [],
+      default: () => {
+        return []
+      },
     },
     resPage: {
       type: Object,
-      default: () => {},
+      default: () => {
+        return {}
+      },
     },
     loading: {
       type: Boolean,
@@ -98,8 +107,9 @@
   const getIndex = (index: number) => {
     if (JSON.stringify(props.resPage) === '{}') {
       return index + 1
+    } else {
+      return index + 1 + (props.resPage.pageNum - 1) * props.resPage.pageSize
     }
-    return index + 1 + (props.resPage.pageNum - 1) * props.resPage.pageSize
   }
 
   let obj = {}
@@ -115,8 +125,8 @@
   const formSearchData = ref(search)
   const formInline = reactive(obj)
 
-  const onSubmit = () => {
-    emit('onSubmit', formInline)
+  const onSubmit = (val) => {
+    emit('onSubmit', val)
   }
 
   const reset = (formEl: FormInstance | undefined) => {
@@ -171,14 +181,6 @@
       }
       .zb-table {
         position: absolute;
-        height: 100%;
-      }
-    }
-    ::v-deep {
-      .el-table__header th {
-        font-size: 15px;
-        font-weight: 700;
-        color: #252525;
       }
     }
     .pagination {

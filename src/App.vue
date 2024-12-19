@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue'
+  import { computed, onMounted } from 'vue'
   import { useSettingStore } from '@/store/modules/setting'
   // 配置element中文
   import zhCn from 'element-plus/es/locale/lang/zh-cn'

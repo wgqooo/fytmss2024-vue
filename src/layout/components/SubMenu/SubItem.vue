@@ -9,7 +9,7 @@
           <svg-icon
             v-if="onlyOneChild.meta.svg"
             style="width: 20px; height: 20px; margin-right: 10px"
-            :icon-class="item.meta.svg"
+            :icon-class="onlyOneChild.meta.svg"
           ></svg-icon>
           <template #title>{{ onlyOneChild.meta && onlyOneChild.meta.title }}</template>
         </el-menu-item>
@@ -19,7 +19,7 @@
       <template #title>
         <!--控制icon图标的地方，item.meta?.icon 中的 ?. 是可选链操作符，用于确保 item.meta 存在并且 icon 属性也存在。-->
         <el-icon v-if="item.meta.icon" :size="20"> <component :is="item.meta?.icon"></component></el-icon>
-        <svg-icon v-if="item.meta.svg" style="width: 20px; height: 20px; margin-right: 10px" :icon-class="item.meta.svg"></svg-icon>
+        <svg-icon v-else style="width: 20px; height: 20px; margin-right: 10px" :icon-class="item.meta.svg"></svg-icon>
         <span>{{ item.meta && item.meta.title }}</span>
       </template>
       <sub-item v-for="child in item.children" :key="child.path" :item="child" />
@@ -65,7 +65,6 @@
       onlyOneChild.value = { ...parent, noShowingChildren: true }
       return true
     }
-
     return false
   }
 

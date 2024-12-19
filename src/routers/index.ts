@@ -19,6 +19,8 @@ import functionPageRouter from './modules/functionPage'
 import baseInfoRouter from './modules/baseInfo'
 import voyageRouter from './modules/voyage'
 import ticketRouter from './modules/ticket'
+import baseQueryRouter from './modules/baseQuery'
+import financeRouter from './modules/finance'
 
 // 异步组件
 //这样做的好处是可以将路由配置拆分到不同的文件或模块中，使代码结构更清晰，并且便于维护和扩展
@@ -27,20 +29,22 @@ const arr2 = [4, 5, 6];
 const combinedArray = [...arr1, ...arr2];
 console.log(combinedArray); // 输出结果为 [1, 2, 3, 4, 5, 6]*/
 export const asyncRoutes = [
+  ...systemRouter,
   ...baseInfoRouter,
   ...voyageRouter,
   ...ticketRouter,
-  ...dataScreenRouter,
-  ...echartsRouter,
-  ...tableRouter,
-  ...formRouter,
-  ...othersRouter,
-  ...functionPageRouter,
-  ...chatRouter,
-  ...nestedRouter,
-  ...excelRouter,
-  ...externalLink,
-  ...systemRouter,
+  ...baseQueryRouter,
+  ...financeRouter,
+  //...dataScreenRouter,
+  //...echartsRouter,
+  //...tableRouter,
+  // ...formRouter,
+  // ...othersRouter,
+  // ...functionPageRouter,
+  // ...chatRouter,
+  //...nestedRouter,
+  //...excelRouter,
+  //...externalLink,
 ]
 
 /**

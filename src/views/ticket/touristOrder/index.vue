@@ -1,7 +1,56 @@
 <template>
-  <div> </div>
+  <div class="app-container">
+    <el-tabs type="border-card" class="demo-tabs" @tab-click="handleClick">
+      <el-tab-pane name="future">
+        <template #label>
+          <span class="custom-tabs-label">
+            <el-icon><calendar /></el-icon>
+            <span> 未出行订单</span>
+          </span>
+        </template>
+      </el-tab-pane>
+      <el-tab-pane name="history">
+        <template #label>
+          <span class="custom-tabs-label">
+            <el-icon><Memo /></el-icon>
+            <span> 历史订单</span>
+          </span>
+        </template>
+      </el-tab-pane>
+      <HistoryOrder v-if="visible" />
+      <FutureOrder v-else />
+    </el-tabs>
+  </div>
 </template>
 
-<script setup lang="ts"></script>
+<script lang="ts" setup>
+  import { ref } from 'vue'
+  import HistoryOrder from './components/historyOrder.vue'
+  import FutureOrder from './components/futureOrder.vue'
 
-<style scoped></style>
+  const visible = ref(false)
+  const handleClick = (tab) => {
+    if (tab.props.name === 'future') visible.value = false
+    else visible.value = true
+  }
+</script>
+
+<style scoped lang="scss">
+  @import './index';
+
+  .demo-tabs > .el-tabs__content {
+    padding: 32px;
+    color: #5bc0de;
+    font-size: 32px;
+    font-weight: 600;
+  }
+
+  .demo-tabs .custom-tabs-label .el-icon {
+    vertical-align: middle;
+    color: #5bc0de;
+  }
+  .demo-tabs .custom-tabs-label span {
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+</style>

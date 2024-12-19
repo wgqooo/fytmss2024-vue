@@ -3,7 +3,7 @@
     <div class="header">
       <el-form ref="ruleFormRef" :inline="true" :model="formInline">
         <el-form-item label="菜单名称" prop="username">
-          <el-input v-model="formInline.username" placeholder="请输入菜单名称" />
+          <el-input v-model="formInline['username']" placeholder="请输入菜单名称" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="onSubmit">查询</el-button>
@@ -62,7 +62,7 @@
   const edit = (row) => {
     menuDrawerRef.value.show(row)
   }
-  const del = () => {
+  const del = (row) => {
     ElMessageBox.confirm('你确定要删除当前项吗?', '温馨提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',

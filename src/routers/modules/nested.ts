@@ -9,7 +9,7 @@ const nestedRouter = [
     redirect: '/nested/menu1',
     name: 'nested',
     meta: {
-      title: '路由嵌套',
+      title: '信息统计',
       icon: 'HelpFilled',
     },
     children: [

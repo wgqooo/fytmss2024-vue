@@ -1,7 +1,7 @@
 <template>
   <div class="util">
     <span class="startPort"
-      >出发港口：
+      >港口：
       <el-select v-model="startPort">
         <el-option label="抚远" :value="0"></el-option>
         <el-option label="哈巴洛夫斯克" :value="1"></el-option>
@@ -49,7 +49,7 @@
             <template #default>
               <div>vip座总数: {{ scope.row.vipSeat }}</div>
               <div>一等座总数: {{ scope.row.firSeat }}</div>
-              <div>二等座数量: {{ scope.row.secSeat }}</div>
+              <div>二等座总数: {{ scope.row.secSeat }}</div>
             </template>
             <template #reference>
               <div>
@@ -130,19 +130,18 @@
 
 <script setup lang="ts">
   import service from '@/api/request'
-  //import router from '@/routers';
   import { getCurrentDate } from '@/utils/dateFormat'
   import { onMounted, ref } from 'vue'
 
   const props = defineProps({
     handleEdit: {
       type: Function,
+      default: () => {},
     },
   })
   const tableData = ref<[]>([])
   const loading = ref(true)
   const startPort = ref(0)
-  //const active = ref(0)
   const dateScope = ref([getCurrentDate(), getCurrentDate()])
 
   const disabledDate = (date) => {
@@ -178,5 +177,5 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../index';
+  @import '../../common/index.scss';
 </style>

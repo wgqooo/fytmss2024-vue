@@ -2,7 +2,7 @@
   <el-dialog v-model="dialogVisible" :title="title" width="50%" @close="close">
     <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="100px">
       <el-form-item label="船舷号" prop="shipNo">
-        <el-input v-model="ruleForm.shipNo" placeholder="请输入船舷号" />
+        <el-input v-model="ruleForm.shipNo" placeholder="请输入船舷号" :disabled="disabledProp" />
       </el-form-item>
       <el-form-item label="船名" prop="shipName">
         <el-input v-model="ruleForm.shipName" placeholder="请输入船名" />
@@ -47,7 +47,7 @@
 </template>
 <script lang="ts" setup>
   import service from '@/api/request'
-  import { ElMessageBox, ElMessage, FormInstance } from 'element-plus'
+  import { ElMessage, FormInstance } from 'element-plus'
   import { reactive, ref } from 'vue'
 
   const props = defineProps({
@@ -58,8 +58,8 @@
 
   const ruleFormRef = ref<FormInstance>()
   const dialogVisible = ref<boolean>(false)
-  const roleNames = ref<string[]>()
   const title = ref('新增用户')
+  const disabledProp = ref(false)
 
   const rules = reactive({
     shipNo: [{ required: true, message: '请输入船舷号', trigger: 'blur' }],
@@ -99,13 +99,15 @@
       else if (key === 'status') ruleForm[key] = true
       else ruleForm[key] = null
     })
+    disabledProp.value = false
   }
 
   const show = (item = {}) => {
     //console.log("item",item)
     title.value = '新增船只'
-    if (item.shipNo) {
+    if (item['shipNo']) {
       title.value = '编辑船只'
+      disabledProp.value = true
       Object.keys(item).forEach((key) => {
         ruleForm[key] = item[key]
       })

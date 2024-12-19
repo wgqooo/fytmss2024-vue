@@ -42,7 +42,7 @@
         </el-descriptions-item>
       </el-descriptions>
     </div>
-    <el-table :data="chooseTravellers" style="width: 100%; height: 100%">
+    <el-table :data="props.chooseTravellers" style="width: 100%; height: 100%">
       <el-table-column type="index" fixed label="序号" align="center" width="55">
         <template #default="{ $index }">
           {{ getIndex($index) }}
@@ -55,9 +55,9 @@
           {{ scope.row.ticketType === 0 ? '成人票' : '儿童票' }}
         </template>
       </el-table-column>
-      <el-table-column prop="seatType" label="座位等级" align="center">
+      <el-table-column prop="startSeat" label="座位等级" align="center">
         <template #default="scope">
-          {{ scope.row.seatType === 0 ? 'VIP座' : scope.row.seatType === 1 ? '一等座' : '二等座' }}
+          {{ scope.row.startSeat }}
         </template>
       </el-table-column>
       <el-table-column prop="ticketPrice" label="票价" align="center">

@@ -2,7 +2,7 @@
   <el-dropdown>
     <span class="el-dropdown-link">
       <el-avatar :size="30" class="avatar" :src="AvatarLogo" />
-      {{ userInfo.name }}
+      {{ userInfo['name'] }}
       <el-icon class="header-icon el-icon--right">
         <arrow-down />
       </el-icon>
@@ -24,7 +24,6 @@
       </el-dropdown-menu>
     </template>
   </el-dropdown>
-
   <PersonalDialog ref="person" />
 </template>
 
@@ -38,6 +37,8 @@
   import { useTagsViewStore } from '@/store/modules/tagsView'
   import { usePermissionStore } from '@/store/modules/permission'
   import PersonalDialog from './PersonalDialog.vue'
+  import service from '@/api/request'
+  //import ws from '@/api/ws'
 
   const router = useRouter()
   const UserStore = useUserStore()
@@ -75,13 +76,21 @@
       type: 'warning',
     })
       .then(async () => {
-        await UserStore.logout()
-        await router.push({ path: '/login' })
-        TagsViewStore.clearVisitedView()
-        PermissionStore.clearRoutes()
-        ElMessage({
-          type: 'success',
-          message: '退出登录成功！',
+        service({
+          method: 'post',
+          url: 'sys/logout',
+        }).then(async (res) => {
+          if (res.data.code === 0) {
+            //ws.send('[' + roles.value + ']' + userInfo.value['name'] + ': 退出登录')
+            await UserStore.logout()
+            await router.push({ path: '/login' })
+            TagsViewStore.clearVisitedView()
+            PermissionStore.clearRoutes()
+            ElMessage({
+              type: 'success',
+              message: res.data.msg + 'byebye',
+            })
+          }
         })
       })
       .catch(() => {})

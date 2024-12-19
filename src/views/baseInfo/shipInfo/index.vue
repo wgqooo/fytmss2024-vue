@@ -1,12 +1,11 @@
 <template>
   <div class="app-container m-user">
-    <UserSide />
-    <UserTable />
+    <ShipTable />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import UserTable from './components/shipTable.vue'
+  import ShipTable from './components/shipTable.vue'
 </script>
 
 <style scoped lang="scss">

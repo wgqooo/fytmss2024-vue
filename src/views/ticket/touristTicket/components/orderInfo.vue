@@ -40,7 +40,7 @@
   const format = ref('xlsx')
   const exportExcelAction = async () => {
     await exportExcel({
-      //去掉第一列的选择框和第二列的序号框和最后一列的操作框
+      //去掉第一列的序号框和最后一列的操作框
       column: baseColumns.slice(1, -1),
       data: props.order,
       filename: '散客购票数据',
@@ -94,6 +94,7 @@
     flex: 1;
     display: flex;
     width: 100%;
+    height: auto;
     padding: 16px;
     box-sizing: border-box;
   }

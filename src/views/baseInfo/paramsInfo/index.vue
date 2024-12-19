@@ -1,13 +1,11 @@
 <template>
   <div class="app-container m-user">
-    <UserSide />
-    <UserTable />
+    <ParamsTable />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import UserTable from './components/userTable.vue'
-  import UserSide from './components/userSide.vue'
+  import ParamsTable from './components/paramsTable.vue'
 </script>
 
 <style scoped lang="scss">

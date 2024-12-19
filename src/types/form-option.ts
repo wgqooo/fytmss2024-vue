@@ -6,7 +6,7 @@ export interface FormOption {
 
 export interface FormOptionList {
   prop: string
-  label: string
+  label?: string
   type: string
   placeholder?: string
   disabled?: boolean
@@ -17,4 +17,5 @@ export interface FormOptionList {
   activeText?: string
   inactiveText?: string
   required?: boolean
+  visible?: boolean
 }

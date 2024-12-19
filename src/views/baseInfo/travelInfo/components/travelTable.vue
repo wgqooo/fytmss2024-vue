@@ -15,7 +15,7 @@
       <div class="util">
         <el-button type="primary" @click="addHandler">
           <el-icon><Plus /></el-icon>
-          新增船只
+          新增旅行社
         </el-button>
       </div>
       <div class="table-inner">

@@ -66,8 +66,9 @@
   const getFormParams = () => {
     let searchParams = {}
     for (let item of props.columns) {
-      searchParams[item.name] = item?.value
+      searchParams[item.name] = item?.value || ''
     }
+    console.log('searchParams', searchParams)
     return searchParams
   }
 
